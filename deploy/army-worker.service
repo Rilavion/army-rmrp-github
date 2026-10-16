@@ -1,0 +1,16 @@
+[Unit]
+Description=Army RMRP Discord worker
+After=network.target postgresql.service
+[Service]
+User=army
+WorkingDirectory=/opt/army
+EnvironmentFile=/opt/army/.env
+ExecStart=/usr/bin/node /opt/army/server/worker.mjs
+Restart=on-failure
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+UMask=0077
+[Install]
+WantedBy=multi-user.target

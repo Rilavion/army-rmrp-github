@@ -1,0 +1,10 @@
+import {createPool} from './db.mjs';
+import {createApp} from './app.mjs';
+const db=createPool();
+const {rows:[role]}=await db.query('SELECT rolsuper,rolbypassrls FROM pg_roles WHERE rolname=current_user');
+if(role.rolsuper||role.rolbypassrls)throw Error('Use a restricted PostgreSQL login for the API');
+if(!/^[a-f0-9]{64}$/i.test(process.env.WEBHOOK_ENCRYPTION_KEY||''))throw Error('WEBHOOK_ENCRYPTION_KEY must contain 64 hex characters');
+const app=await createApp(db,{origin:process.env.PUBLIC_ORIGIN,production:process.env.NODE_ENV==='production',key:process.env.WEBHOOK_ENCRYPTION_KEY,storageRoot:process.env.MEDIA_ROOT});
+const server=app.listen(Number(process.env.PORT||8787),process.env.HOST||'127.0.0.1',()=>console.log('Army portal listening'));
+const timer=setInterval(()=>db.query('DELETE FROM auth_sessions WHERE expires_at<now()').catch(()=>console.error('session_cleanup_failed')),3600000);timer.unref();
+for(const signal of ['SIGINT','SIGTERM'])process.on(signal,()=>server.close(async()=>{clearInterval(timer);await db.end();process.exit(0);}));

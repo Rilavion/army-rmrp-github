@@ -1,0 +1,27 @@
+{
+  "name": "army-rmrp-original-handoff",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "start": "node --env-file-if-exists=.env server/start.mjs",
+    "preview": "node tools/preview.mjs",
+    "test": "node --test --test-concurrency=1 tests/*.test.mjs",
+    "check": "node tools/check.mjs",
+    "db:migrate": "node --env-file-if-exists=.env tools/migrate.mjs",
+    "user:create": "node --env-file-if-exists=.env tools/create-user.mjs",
+    "worker": "node --env-file-if-exists=.env server/worker.mjs"
+  },
+  "dependencies": {
+    "express": "^5.1.0",
+    "express-rate-limit": "^8.0.1",
+    "helmet": "^8.1.0",
+    "pg": "^8.16.3"
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "^0.3.16"
+  }
+}
