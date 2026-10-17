@@ -70,4 +70,28 @@ test('complaint form is seeded, editable and enforced by the server',async()=>{
  const r=await call('/db/rpc/submit_complaint',{p_values:values,p_submitter_fio:values.submitter_fio,p_submitter_static:values.submitter_static,p_target_static:values.target_static,p_evidence_url:values.evidence_url});assert.equal(r.status,200,JSON.stringify(r));
  assert.equal((await call('/db/query',spec('complaints'))).status,401);
 });
+test('new supply ledger enforces permissions, computes totals, detects stale edits, restores and exports by Moscow dates',async()=>{
+ const b={location:'OB7',recipient:'ЦГБ №3',status:'DELIVERED',trucks_planned:3,trucks_arrived:2,escort_status:'YES',event_at:'2026-10-17T00:30:00+03:00',comment:'Контрольный пример',organizations:Object.fromEntries(['vs_rf','cgb3','cgb7','fso','fsb','uvd_cao','gibdd','codd','fsvng','fsin'].map(k=>[k,k==='vs_rf'?4:0])),idempotency_key:crypto.randomUUID(),total:9999};
+ assert.equal((await call('/supply-ledger',undefined,'','GET')).status,401);
+ assert.equal((await call('/supply-ledger',b,user)).status,403);
+ assert.equal((await call('/supply-ledger',{...b,trucks_arrived:4},admin)).status,400);
+ const r=await call('/supply-ledger',b,admin);assert.equal(r.status,200,JSON.stringify(r));assert.equal(r.data.total,4);const id=r.data.id;
+ assert.equal((await call('/supply-ledger',b,admin)).data.id,id);
+ const page=await call('/supply-ledger?from=2026-10-17&to=2026-10-17&location=OB7',undefined,admin,'GET');assert.equal(page.data.summary.count,1);assert.equal(page.data.summary.arrived,2);
+ assert.equal((await call(`/supply-ledger/${id}/update`,{...b,revision:0},admin)).status,409);
+ assert.equal((await call(`/supply-ledger/${id}/update`,{...b,revision:1,trucks_arrived:3},admin)).data.revision,2);
+ assert.equal((await call(`/supply-ledger/${id}/send`,{revision:2},admin)).status,200);
+ assert.equal((await call(`/supply-ledger/${id}/delete`,{revision:3},admin)).status,200);
+ assert.equal((await call('/supply-ledger?deleted=true',undefined,admin,'GET')).data.summary.count,1);
+ assert.equal((await call(`/supply-ledger/${id}/restore`,{revision:4},admin)).status,200);
+ assert.equal((await call(`/supply-ledger/${id}/history`,undefined,admin,'GET')).data.length,5);
+ assert.equal((await call('/db/query',spec('supply_ledger','delete'),admin)).status,404);
+ const out=(await db.query("SELECT * FROM outbox WHERE entity_type='supply_ledger' AND entity_id=$1",[id])).rows;assert.equal(out.length,1);assert.equal(out[0].version,3);
+});
+test('VP and payroll directory comes from composition without Discord privileges or bot',async()=>{
+ const state={hq:{},subs:[{id:'vp',name:'Военная полиция',short:'ВП',members:[{name:'Тест Сотрудник',code:'123-456',discord_id:'628681773462585354'},{name:'Нет статика',code:''}]}]};
+ await call('/db/query',spec('composition','upsert',{id:1,state},{onConflict:'id'}),admin);
+ assert.equal((await call('/directory',undefined,'','GET')).status,401);assert.equal((await call('/directory',undefined,user,'GET')).status,403);
+ const r=await call('/directory',undefined,admin,'GET');assert.equal(r.data.members.length,1);assert.equal(r.data.members[0].discord_id,'static:123-456');assert.equal(r.data.members[0].role_ids.length,1);assert.ok(r.data.roles.some(x=>x.name==='Военная полиция'));
+});
 

@@ -12,6 +12,7 @@ import {storage} from './storage.mjs';
 import {notifyMutation} from './notifications.mjs';
 import {examRPC} from './exams.mjs';
 import {validateSubmission} from './forms.mjs';
+import {supplyLedger} from './supply-ledger.mjs';
 const root=path.resolve(import.meta.dirname,'..');
 const publicUser=u=>u?{id:u.id,email:u.email,user_metadata:u.user_metadata||{},created_at:u.created_at}:null;
 export async function createApp(db,{origin,production=false,key,test=false,storageRoot=path.join(root,'.local/media')}={}){
@@ -71,6 +72,19 @@ export async function createApp(db,{origin,production=false,key,test=false,stora
  app.get('/api/v1/integrations',async(req,res)=>{admin(req.user);answer(res,{routes:(await db.query('SELECT id,label,enabled,(encrypted_url IS NOT NULL) configured FROM webhook_routes ORDER BY id')).rows,queue:(await db.query('SELECT id,route_id,entity_type,entity_id,status,attempts,message_id,last_error,updated_at FROM outbox ORDER BY updated_at DESC LIMIT 100')).rows});});
  app.post('/api/v1/integrations/:id',async(req,res)=>{admin(req.user);const encrypted=req.body.url?encrypt(webhookURL(req.body.url),key):null;if(typeof req.body.enabled!=='boolean')fail(400,'Неверное состояние');const r=await db.query('UPDATE webhook_routes SET encrypted_url=coalesce($1,encrypted_url),enabled=$2,updated_at=now() WHERE id=$3',[encrypted,req.body.enabled,req.params.id]);if(!r.rowCount)fail(404,'Маршрут не найден');await audit(db,req.user,'configure','webhook',req.params.id);answer(res,{});});
  app.get('/api/v1/audit',async(req,res)=>{admin(req.user);answer(res,(await db.query('SELECT * FROM audit_log ORDER BY id DESC LIMIT 500')).rows);});
+ app.get('/api/v1/directory',async(req,res)=>{
+  if(!req.user)fail(401,'Войдите в аккаунт');if(!can(req.user,'vp','view')&&!can(req.user,'payroll','view'))fail(403,'Нет доступа к служебному составу');
+  const state=(await db.query('SELECT state FROM composition WHERE id=1')).rows[0]?.state||{},roles=[],members=new Map();
+  const groups=[{id:'hq',name:'Штаб бригады',short:'Штаб',members:Object.values(state.hq||{})},...(state.subs||[])];
+  for(const [index,group]of groups.entries()){
+   const role_id='site:'+hash(String(group.id)).slice(0,24);roles.push({role_id,name:String(group.name||group.short||'Подразделение'),position:groups.length-index,color:/^#[0-9a-f]{6}$/i.test(group.color||'')?group.color:'#7a8a4a'});
+   for(const person of group.members||[]){if(!person.name?.trim()||!/^\d{3}-\d{3}$/.test(person.code||''))continue;
+    const id='static:'+person.code;
+    const m=members.get(id)||{discord_id:id,parsed_fio:person.name,parsed_static:person.code,parsed_dept:group.short||group.name,display_name:person.name,raw_nick:person.name,role_ids:[],role_names:[],active:true};m.role_ids.push(role_id);m.role_names.push(group.name);members.set(id,m);
+   }
+  }answer(res,{roles,members:[...members.values()]});
+ });
+ supplyLedger(app,db);
  storage(app,storageRoot);
  app.use('/api',(req,res)=>res.status(404).json({data:null,error:{message:'Маршрут не найден'}}));
  app.use(express.static(path.join(root,'public'),{dotfiles:'deny',index:'index.html'}));

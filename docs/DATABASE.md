@@ -1,6 +1,6 @@
 # PostgreSQL: схема данных
 
-Миграции применяются к новой БД в порядке 001 → 006. Полные CREATE TABLE, индексы, внешние ключи и функции находятся в SQL-файлах этого каталога. Этот справочник сформирован из применённой схемы, содержит 69 таблиц.
+Миграции применяются к новой БД в порядке 001 → 007. Полные CREATE TABLE, индексы, внешние ключи и функции находятся в SQL-файлах этого каталога. Этот справочник сформирован из применённой схемы, содержит 71 таблиц.
 
 ## Основные группы
 
@@ -8,7 +8,7 @@
 - Экзамены: tests, test_categories, test_questions, exam_runs, test_attempts, test_blocks.
 - Обучение: train_categories, train_lessons, learn_materials, lesson_completions.
 - Обращения: request_forms, requests, complaint_form, complaints, история рассмотрения.
-- Поставки: supply_form, supply_requests, supply_entries.
+- Поставки: supply_form, supply_requests, supply_entries, supply_ledger, supply_ledger_history.
 - ВП и премии: vp_checks, vp_archive, payroll_drafts, payroll_archive.
 - Уведомления: webhook_routes, outbox, *_send_requests, audit_log.
 
@@ -650,6 +650,41 @@ API работает под ограниченной ролью, схема за
 | ping_role_name | text | YES | — |
 | status_emoji | jsonb | YES | — |
 
+### supply_ledger
+
+| Колонка | Тип | NULL | По умолчанию |
+|---|---|---|---|
+| id | uuid | NO | gen_random_uuid() |
+| location | text | NO | — |
+| recipient | text | NO | — |
+| status | text | NO | — |
+| trucks_planned | integer | NO | — |
+| trucks_arrived | integer | NO | — |
+| escort_status | text | NO | — |
+| event_at | timestamp with time zone | NO | — |
+| comment | text | NO | ''::text |
+| organizations | jsonb | NO | — |
+| total | integer | NO | — |
+| revision | integer | NO | 1 |
+| created_by | uuid | NO | — |
+| updated_by | uuid | NO | — |
+| created_at | timestamp with time zone | NO | now() |
+| updated_at | timestamp with time zone | NO | now() |
+| deleted_at | timestamp with time zone | YES | — |
+| webhook_requested | boolean | NO | false |
+| idempotency_key | uuid | NO | — |
+
+### supply_ledger_history
+
+| Колонка | Тип | NULL | По умолчанию |
+|---|---|---|---|
+| id | bigint | NO | — |
+| supply_id | uuid | NO | — |
+| actor_id | uuid | NO | — |
+| action | text | NO | — |
+| snapshot | jsonb | NO | — |
+| created_at | timestamp with time zone | NO | now() |
+
 ### supply_requests
 
 | Колонка | Тип | NULL | По умолчанию |
@@ -1206,5 +1241,4 @@ SELECT id,departed,arrived,round(100.0*arrived/nullif(departed,0),1) delivered_p
 ```
 
 Не публикуйте результаты запросов с персональными данными. Отчёт не включает реальные записи.
-
 
