@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Галерея - ВС РФ · в/ч №12132</title>
+<link rel="icon" href="favicon/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="css/stability.css">
+</head>
+<body>
+<canvas id="bgCanvas"></canvas>
+<div class="bg-noise"></div>
+<div class="progress-bar" id="progressBar"></div>
+<div class="page-transition-overlay" id="overlay"></div>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" id="goHome" href="index.html">
+      <div class="brand-icon"><img src="favicon/favicon.png" alt="ВС"></div>
+      <div class="brand-text">
+        <span class="brand-label">Вооружённые Силы РФ</span>
+        <span class="brand-name">1-я ОБрСпН · в/ч №12132</span>
+      </div>
+    </a>
+    <nav class="nav" id="mainNav">
+      <a href="index.html" data-page="index.html" data-transition>Главная</a>
+      <a href="ustav.html" data-page="ustav.html" data-transition>Уставы</a>
+      <a href="gallery.html" data-page="gallery.html" data-transition>Галерея</a>
+      <a href="news.html" data-page="news.html" data-transition>Новости</a>
+      <a href="autopark.html" data-page="autopark.html" data-transition>Автопарк</a>
+      <a href="map.html" data-page="map.html" data-transition>Карта</a>
+    
+
+<a href="supply-report.html" data-page="supply-report.html" data-transition data-perm="supply:view">Учёт поставок</a>
+<a href="integrations.html" data-page="integrations.html" data-transition data-perm="lk:roles">Уведомления Discord</a></nav>
+    <div class="header-actions">
+      <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Сменить тему">
+        <svg class="moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <svg class="sun" viewBox="0 0 24 24"><path d="M12 4V2m0 20v-2m8-8h2M2 12h2m13.66-5.66l1.42-1.42M4.92 19.08l1.42-1.42m0-11.32L4.92 4.92m14.16 14.16l-1.42-1.42M12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+      <button class="login-btn" data-open-login>
+        <svg viewBox="0 0 24 24"><path d="M12 12a5 5 0 1 0-5-5 5 5 0 0 0 5 5zm0 2c-3.33 0-10 1.67-10 5v3h20v-3c0-3.33-6.67-5-10-5z"/></svg>
+        <span>Войти</span>
+      </button>
+      <button class="burger" id="burger" aria-label="Меню"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="section" style="padding-top:60px">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="badge">Фотоархив части</span>
+        <h2>Галерея</h2>
+        <p>Внешний вид воинской части, казармы, техника, мероприятия и повседневная служба личного состава.</p>
+      </div>
+
+      <div class="filters reveal" id="filters">
+        <button class="filter-btn active" data-filter="all">Все</button>
+        <button class="filter-btn" data-filter="territory">Территория</button>
+        <button class="filter-btn" data-filter="barracks">Казармы</button>
+        <button class="filter-btn" data-filter="tech">Техника</button>
+        <button class="filter-btn" data-filter="events">Мероприятия</button>
+      </div>
+
+      <div class="gallery-grid" id="gallery"></div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <h4>1-я ОБрСпН · в/ч №12132</h4>
+        <p>Вооружённые Силы Российской Федерации. Отдельная гвардейская бригада специального назначения. Служим Отечеству.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Разделы</h5>
+        <a href="index.html">Главная</a>
+        <a href="ustav.html">Уставы</a>
+        <a href="gallery.html">Галерея</a>
+        <a href="news.html">Новости</a>
+      </div>
+      <div class="footer-col">
+        <h5>Ресурсы</h5>
+        <a href="autopark.html">Автопарк</a>
+        <a href="map.html">Карта</a>
+        <a href="#" data-open-login>Личный кабинет</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© <span id="year"></span> · Вооружённые Силы Российской Федерации</span>
+      <span>1-я ОБрСпН · в/ч №12132</span>
+    </div>
+  </div>
+</footer>
+
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" aria-label="Закрыть">✕</button>
+  <img class="lightbox-img" id="lightboxImg" alt="">
+  <div class="lightbox-caption" id="lightboxCap"></div>
+</div>
+
+<div class="modal-back" id="loginModal">
+  <div class="modal">
+    <button class="modal-close" aria-label="Закрыть">✕</button>
+    <h3>Вход администратора</h3>
+    <div class="modal-sub">Доступ к управлению контентом</div>
+    <form>
+      <div class="form-group"><label>Email</label><input type="email" name="email" required></div>
+      <div class="form-group"><label>Пароль</label><input type="password" name="password" required></div>
+      <button class="btn btn-gold" style="width:100%" type="submit">Войти</button>
+      <div class="form-msg"></div>
+    </form>
+  </div>
+</div>
+
+<script src="js/core/api-client.js"></script>
+<script src="js/core/config.js"></script>
+<script src="js/ui/main.js"></script>
+<script src="js/ui/holiday-engine.js"></script>
+<script src="js/core/auth.js"></script>
+<script>
+document.getElementById("year").textContent=new Date().getFullYear();
+
+const ITEMS=[
+  {cat:"territory",title:"КПП №1 · Главный вход",img:""},
+  {cat:"territory",title:"Плац для построений",img:""},
+  {cat:"territory",title:"Территория штаба",img:""},
+  {cat:"barracks",title:"Казарма роты охраны",img:""},
+  {cat:"barracks",title:"Расположение ССО",img:""},
+  {cat:"barracks",title:"Комната досуга",img:""},
+  {cat:"tech",title:"Бронеавтомобиль «Тигр-М»",img:"https://images.unsplash.com/photo-1587302912306-cf1ed9c33146?w=1200&q=70&auto=format&fit=crop"},
+  {cat:"tech",title:"Служебный транспорт",img:""},
+  {cat:"tech",title:"Спецтехника обеспечения",img:""},
+  {cat:"events",title:"Приведение к присяге",img:"https://images.unsplash.com/photo-1519669556878-63bdad8a1a49?w=1200&q=70&auto=format&fit=crop"},
+  {cat:"events",title:"День части · парадное построение",img:"https://images.unsplash.com/photo-1541544741938-0af808871cc0?w=1200&q=70&auto=format&fit=crop"},
+  {cat:"events",title:"Тактические учения",img:"https://images.unsplash.com/photo-1580982328062-c1c2ba2b7a44?w=1200&q=70&auto=format&fit=crop"}
+];
+const catLabel={territory:"Территория",barracks:"Казармы",tech:"Техника",events:"Мероприятия"};
+
+const gallery=document.getElementById("gallery");
+function render(filter){
+  const list=filter==="all"?ITEMS:ITEMS.filter(i=>i.cat===filter);
+  if(!list.length){gallery.innerHTML=`<div class="empty-state" style="grid-column:1/-1"><h3>Изображений нет</h3><p>По этой категории пока нет материалов.</p></div>`;return}
+  gallery.innerHTML=list.map((it,idx)=>{
+    const inner=it.img
+      ? `<img src="${it.img}" alt="${it.title}" loading="lazy">`
+      : `<div class="gallery-placeholder"><div><div style="font-size:32px;margin-bottom:6px;opacity:.5">◆</div>Ожидается изображение</div></div>`;
+    return `<div class="gallery-item reveal" data-idx="${idx}">
+      ${inner}
+      <div class="gallery-caption">
+        <span class="gallery-cat">${catLabel[it.cat]}</span>
+        ${it.title}
+      </div>
+    </div>`;
+  }).join("");
+  window._galItems=list;
+  gallery.querySelectorAll(".reveal").forEach(el=>{
+    new IntersectionObserver((es,io)=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("visible");io.unobserve(e.target)}}),{threshold:.1}).observe(el);
+  });
+}
+render("all");
+
+document.getElementById("filters").addEventListener("click",e=>{
+  const b=e.target.closest(".filter-btn");if(!b) return;
+  document.querySelectorAll(".filter-btn").forEach(x=>x.classList.remove("active"));
+  b.classList.add("active");
+  render(b.dataset.filter);
+});
+
+const lb=document.getElementById("lightbox");
+const lbImg=document.getElementById("lightboxImg");
+const lbCap=document.getElementById("lightboxCap");
+gallery.addEventListener("click",e=>{
+  const it=e.target.closest(".gallery-item");if(!it) return;
+  const item=window._galItems[+it.dataset.idx];
+  if(!item||!item.img) return;
+  lbImg.src=item.img;
+  lbCap.textContent=item.title;
+  lb.classList.add("active");
+});
+lb.addEventListener("click",e=>{if(e.target===lb||e.target.classList.contains("lightbox-close")) lb.classList.remove("active")});
+document.addEventListener("keydown",e=>{if(e.key==="Escape") lb.classList.remove("active")});
+</script>
+
+</body>
+</html>
+
