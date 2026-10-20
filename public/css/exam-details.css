@@ -1,0 +1,33 @@
+
+
+.attempt-detail-questions{display:flex;flex-direction:column;gap:10px;max-height:50vh;overflow-y:auto;padding-right:6px}
+
+.attempt-detail-question{padding:10px 14px;border-radius:8px;border-left:3px solid #666;background:rgba(21,36,29,.5)}
+
+.attempt-detail-ok{border-left-color:#7dd97d;background:rgba(80,180,80,.06)}
+
+.attempt-detail-bad{border-left-color:#e97a7a;background:rgba(200,70,70,.06)}
+
+.attempt-detail-text{margin-bottom:8px;color:#f5ecd6;display:flex;gap:10px;align-items:baseline}
+
+.attempt-detail-options{display:flex;flex-direction:column;gap:3px}
+
+.attempt-detail-option{font-size:12px;padding:3px 8px;border-radius:4px;color:var(--muted);font-family:monospace}
+
+.attempt-detail-option.is-correct{color:#a9e5a9;background:rgba(80,180,80,.14)}
+
+.attempt-detail-option.is-user{font-weight:600}
+
+.attempt-detail-option.is-user.is-correct{background:rgba(80,180,80,.25)}
+
+.attempt-detail-option.is-user:not(.is-correct){color:#f0a5a5;background:rgba(200,70,70,.14)}
+
+.attempt-detail-history{margin-top:14px;padding:10px 14px;background:rgba(21,36,29,.6);border-radius:8px;font-size:11px;color:var(--muted)}
+
+.attempt-detail-history-item{margin-top:4px;font-family:'JetBrains Mono',monospace;font-size:10px}
+
+
+/* --- Просмотр попытки: сравнение порядка --- */
+.attempt-detail-order{display:flex;gap:20px;flex-wrap:wrap;margin-top:8px}
+
+.attempt-detail-order>div{flex:1;min-width:220px}

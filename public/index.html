@@ -1,0 +1,417 @@
+<!DOCTYPE html><html lang="ru"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="favicon/favicon.ico" sizes="any">
+<link rel="icon" href="favicon/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="favicon/favicon.png">
+<link rel="apple-touch-icon" href="favicon/favicon.png">
+<link rel="shortcut icon" href="favicon/favicon.png">
+<title>ВС РФ — в/ч №12132 · Главная</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&amp;family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css?v=150">
+<script>document.documentElement.classList.add("home-page-html")</script>
+<link rel="stylesheet" href="css/stability.css">
+</head>
+<body class="home-page-body">
+<canvas id="bgCanvas"></canvas>
+<div class="bg-noise"></div>
+<div class="page-transition-overlay" id="overlay"></div>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="index.html">
+      <div class="brand-icon"><img src="favicon/favicon.png" alt="ВС"></div>
+      <div class="brand-text">
+        <span class="brand-label">Вооружённые Силы РФ</span>
+        <span class="brand-name">1-я МСБр · в/ч №12132</span>
+      </div>
+    </a>
+    <nav class="nav" id="mainNav">
+<a href="accounts-review.html" data-page="accounts-review.html" data-perm="registration:review" data-loggedin="">Регистрация сотрудников</a>
+<a href="index.html" data-page="index.html">Главная</a>
+<a href="info.html" data-page="info.html">Информация</a>
+<a href="ustav.html" data-page="ustav.html">Уставы</a>
+<a href="composition.html" data-page="composition.html">Состав</a>
+<a href="news.html" data-page="news.html">Новости</a>
+<a href="autopark.html" data-page="autopark.html">Автопарк</a>
+<a href="map.html" data-page="map.html">Карта</a>
+<a href="faq.html" data-page="faq.html">FAQ</a>
+<a href="complaints.html" data-page="complaints.html">Жалобы</a>
+<a href="tests.html" data-page="tests.html" data-loggedin="">Тестирование</a>
+<a href="leave.html" data-page="leave.html" data-loggedin="">Увольнительная</a>
+<a href="vacation-ic.html" data-page="vacation-ic.html" data-loggedin="">Отпуск IC</a>
+<a href="vacation-ooc.html" data-page="vacation-ooc.html" data-loggedin="">Отпуск OOC</a>
+<a href="dismissal.html" data-page="dismissal.html" data-loggedin="">Увольнение</a>
+<a href="promotion.html" data-page="promotion.html" data-loggedin="">Повышение</a>
+<a href="restoration.html" data-page="restoration.html" data-loggedin="">Восстановление в ВС РФ</a>
+<a href="report.html" data-page="report.html" data-loggedin="">Еженедельный отчёт</a>
+<a href="vp-request.html" data-page="vp-request.html" data-perm="vp_request:submit" data-loggedin="">Запрос на наказание</a>
+<a href="docs.html" data-page="docs.html" data-perm="docs:view" data-loggedin="">Документы</a>
+<a href="supply.html" data-page="supply.html" data-perm="supply:view" data-loggedin="">Запрос поставки</a>
+<a href="supply-report.html" data-page="supply-report.html" data-perm="supply:view" data-loggedin="">Учёт поставок</a>
+<a href="supply-stats.html" data-page="supply-stats.html" data-perm="supply:stats" data-loggedin="">Статистика поставок</a>
+<a href="supply-admin.html" data-page="supply-admin.html" data-perm="supply:admin" data-loggedin="">Настройки поставок</a>
+<a href="requests-review.html" data-page="requests-review.html" data-perm="requests:review,requests:view" data-loggedin="">Заявки</a>
+<a href="requests-stats.html" data-page="requests-stats.html" data-perm="requests:review,requests:view" data-loggedin="">Статистика заявок</a>
+<a href="requests-settings.html" data-page="requests-settings.html" data-perm="requests:settings" data-loggedin="">Настройки заявок</a>
+<a href="vp.html" data-page="vp.html" data-perm="vp:view" data-loggedin="">Проверки ВП</a>
+<a href="complaints-review.html" data-page="complaints-review.html" data-perm="complaints:review,complaints:view" data-loggedin="">Рассмотрение жалоб</a>
+<a href="complaints-stats.html" data-page="complaints-stats.html" data-perm="complaints:review,complaints:view" data-loggedin="">Статистика жалоб</a>
+<a href="complaints-form.html" data-page="complaints-form.html" data-perm="complaints:form_edit,complaints:settings" data-loggedin="">Редактор жалобы</a>
+<a href="complaints-settings.html" data-page="complaints-settings.html" data-perm="complaints:settings" data-loggedin="">Настройки жалоб</a>
+<a href="payroll.html" data-page="payroll.html" data-perm="payroll:view" data-loggedin="">Реестр премирования</a>
+<a href="report-settings.html" data-page="report-settings.html" data-perm="report:settings" data-loggedin="">Настройки отчётов</a>
+<a href="vp-request-settings.html" data-page="vp-request-settings.html" data-perm="vp_request:settings" data-loggedin="">Настройки запросов ВП</a>
+<a href="roles.html" data-page="roles.html" data-perm="lk:roles" data-loggedin="">Роли и права</a>
+<a href="integrations.html" data-page="integrations.html" data-perm="lk:roles" data-loggedin="">Уведомления Discord</a>
+<a href="lk.html" data-page="lk.html" data-loggedin="">Личный кабинет</a>
+</nav>
+    <div class="header-actions">
+      <button class="search-btn" data-open-search="" title="Поиск (Ctrl+K)">
+        <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 1 0-.7.7l.27.28v.79l5 5 1.49-1.49-5-5zM9.5 14A4.5 4.5 0 1 1 14 9.5 4.5 4.5 0 0 1 9.5 14z"></path></svg>
+        <span>Поиск</span>
+        <span class="kbd">Ctrl K</span>
+      </button>
+      <button class="icon-btn" data-open-notify="" title="Уведомления" style="position:relative">
+        <svg viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6V11c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"></path></svg>
+        <span class="vsrf-notify-badge" data-notify-badge=""></span>
+      </button>
+      <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Сменить тему">
+        <svg class="moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+        <svg class="sun" viewBox="0 0 24 24"><path d="M12 4V2m0 20v-2m8-8h2M2 12h2m13.66-5.66l1.42-1.42M4.92 19.08l1.42-1.42m0-11.32L4.92 4.92m14.16 14.16l-1.42-1.42M12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg>
+      </button>
+      <button class="login-btn" data-open-login="">
+        <svg viewBox="0 0 24 24"><path d="M12 12a5 5 0 1 0-5-5 5 5 0 0 0 5 5zm0 2c-3.33 0-10 1.67-10 5v3h20v-3c0-3.33-6.67-5-10-5z"></path></svg>
+        <span>Войти</span>
+      </button>
+      <button class="burger" id="burger" aria-label="Меню"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<main class="home-onepage">
+  <section class="hero-v4" id="heroV4">
+    <div class="hero-v4-photo" style="background-image:url('fon.png')"></div>
+    <div class="hero-v4-veil"></div>
+    <div class="hero-v4-vignette"></div>
+    <canvas class="hero-v4-particles" id="heroParticles"></canvas>
+
+    <div class="container hero-v4-inner">
+      <div class="hero-v4-content">
+        <div class="hero-v4-kicker">1-я мотострелковая бригада Московской Области</div>
+        <h1 class="hero-v4-title">
+          <span>Бригада специального</span>
+          <span class="hero-v4-title-accent">назначения</span>
+        </h1>
+        <div class="hero-v4-badge">
+          <span class="hero-v4-badge-star">★</span>
+          <span>в/ч №12132</span>
+          <span class="hero-v4-badge-star">★</span>
+        </div>
+        <p class="hero-v4-lead">
+          Всегда на шаг впереди. Там, где другие не справляются — мы выполняем задачу. <b>Честь. Долг. Отвага.</b>
+        </p>
+
+        <div class="hero-v4-about">
+          <div class="hero-v4-about-label">О бригаде</div>
+          <p>1-я МСБр — элитное соединение Вооружённых Сил РФ. Выполняем специальные задачи в тылу противника, ведение разведки и участие в антитеррористических операциях.</p>
+        </div>
+
+        <div class="hero-v4-cta">
+          <a class="btn btn-gold" href="ustav.html" data-transition="">Уставы</a>
+          <a class="btn btn-ghost" href="composition.html" data-transition="">Личный состав</a>
+          <a class="btn btn-ghost" href="news.html" data-transition="">Новости →</a>
+        </div>
+      </div>
+
+      <div class="hero-v4-emblem" id="heroEmblem">
+        <div class="hero-v4-emblem-glow"></div>
+        <div class="hero-v4-emblem-ring"></div>
+        <div class="hero-v4-emblem-ring hero-v4-emblem-ring-2"></div>
+        <div class="hero-v4-emblem-star" aria-hidden="true">
+          <svg viewBox="0 0 200 200"><polygon points="100,10 122,74 190,74 135,114 156,180 100,140 44,180 65,114 10,74 78,74" fill="none" stroke="#cda85a" stroke-width="1" opacity=".55"></polygon></svg>
+        </div>
+        <div class="hero-v4-emblem-3d">
+          <div class="hero-v4-emblem-inner">
+            <img src="favicon/favicon.png" alt="Эмблема">
+            <span class="hero-v4-emblem-shine"></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-v4-newsline" id="heroNewsline">
+        <span class="hero-v4-newsline-label">◉ Оперативная сводка</span>
+        <div class="hero-v4-newsline-track" id="heroNewsTrack">
+          <span class="hero-v4-newsline-hint">Загрузка сводки...</span>
+        </div>
+        <a class="hero-v4-newsline-more" href="news.html" data-transition="">Все →</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <h4>Настройки сайта</h4>
+        <div class="footer-settings">
+          <div class="footer-settings-row">
+            <span class="footer-settings-label">
+              <svg viewBox="0 0 24 24"><path d="M13 3l-1.5 6H15l-3.5 12v-8H9l1.5-10H13z"></path></svg>
+              Анимации
+            </span>
+            <label class="fs-switch"><input type="checkbox" id="fsAnim" checked=""><span class="fs-switch-track"><span class="fs-switch-thumb"></span></span></label>
+          </div>
+          <div>
+            <div class="footer-settings-label" style="margin-bottom:8px">
+              <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"></path></svg>
+              Фон
+            </div>
+            <div class="fs-modes" id="fsModes">
+<button class="fs-mode" data-bg="falling" title="Армейские символы">★ Атмосфера ВС РФ</button>
+<button class="fs-mode" data-bg="dots">Точки</button>
+<button class="fs-mode" data-bg="waves">Волны</button>
+              <button class="fs-mode" data-bg="grid" title="Сеть с частицами">
+                <svg viewBox="0 0 24 24"><path d="M4 4h6v6H4zm10 0h6v6h-6zm-10 10h6v6H4zm10 0h6v6h-6z"></path></svg>
+                Сеть
+              </button>
+              <button class="fs-mode" data-bg="stars" title="Военные звёзды">
+                <svg viewBox="0 0 24 24"><path d="M12 2l3 6.5 7 .8-5.2 4.7 1.5 7L12 17.3 5.7 21l1.5-7L2 9.3l7-.8z"></path></svg>
+                Звёзды
+              </button>
+              <button class="fs-mode" data-bg="radar" title="Радар">
+                <svg viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 9 9h-2a7 7 0 1 1-7-7V3z"></path><circle cx="12" cy="12" r="1.5"></circle></svg>
+                Радар
+              </button>
+            </div>
+          </div>
+          <div class="footer-settings-row fs-sound-row">
+            <span class="footer-settings-label">
+              <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 8v8a4.5 4.5 0 0 0 2.5-4z"></path></svg>
+              Звуки
+            </span>
+            <label class="fs-switch"><input type="checkbox" id="fsSound"><span class="fs-switch-track"><span class="fs-switch-thumb"></span></span></label>
+          </div>
+          <div class="fs-sound-vol"><span>тише</span><input type="range" id="fsSoundVol" min="0" max="1" step="0.05"><span id="fsSoundVolVal">35%</span></div>
+          <div class="footer-note">Настройки сохраняются в браузере</div>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h5>Разделы</h5>
+        <a href="index.html" data-page="index.html">Главная</a>
+        <a href="ustav.html" data-page="ustav.html">Уставы</a>
+        <a href="composition.html" data-page="composition.html">Состав</a>
+        <a href="news.html" data-page="news.html">Новости</a>
+      </div>
+      <div class="footer-col">
+        <h5>Ресурсы</h5>
+        <a href="autopark.html" data-page="autopark.html">Автопарк</a>
+        <a href="map.html" data-page="map.html">Карта</a>
+        <a href="faq.html" data-page="faq.html">FAQ</a>
+        <a href="lk.html" data-page="lk.html">Личный кабинет</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© <span id="year"></span> · Вооружённые Силы Российской Федерации</span>
+      <span>1-я МСБр · в/ч №12132</span>
+    </div>
+  </div>
+</footer>
+
+<div class="fab-stack" id="fabStack">
+  <button class="fab" id="fabUp" title="Наверх">
+    <svg viewBox="0 0 24 24"><path d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8z"></path></svg>
+    <span class="fab-hint">Наверх</span>
+  </button>
+</div>
+
+<div class="search-modal" id="searchModal">
+  <div class="search-box">
+    <div class="search-input-wrap">
+      <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 1 0-.7.7l.27.28v.79l5 5 1.49-1.49-5-5zM9.5 14A4.5 4.5 0 1 1 14 9.5 4.5 4.5 0 0 1 9.5 14z"></path></svg>
+      <input class="search-input" placeholder="Поиск по уставам, страницам, разделам..." spellcheck="false">
+      <button class="search-close-kbd">Esc</button>
+    </div>
+    <div class="search-results"></div>
+  </div>
+</div>
+
+
+
+<script src="js/core/api-client.js?v=145"></script>
+<script src="js/core/config.js"></script>
+<script src="js/ui/navigation.js"></script>
+<script src="js/ui/main.js"></script>
+<script src="js/ui/holiday-engine.js"></script>
+<script src="js/ui/settings-panel.js"></script>
+<script src="js/ui/sound-engine.js"></script>
+<script src="js/core/auth.js"></script><script src="js/core/directory.js"></script>
+<script src="js/core/roles-engine.js?v=145"></script>
+<script src="js/features/faq-engine.js"></script>
+<script src="js/ui/search-engine.js"></script>
+<script src="js/utils/ds-cache.js?v=145"></script>
+<script src="js/ui/notify-engine.js?v=145"></script>
+<script src="js/ui/notify-live.js?v=145"></script>
+<script src="js/features/news.js"></script>
+<script src="js/features/news-reader.js"></script>
+<script>
+document.getElementById("year").textContent=new Date().getFullYear();
+
+let PREVIEW=[];
+function openNews(id){
+  const n=PREVIEW.find(x=>String(x.id)===String(id));if(!n) return;
+  VSRF_NEWS_READER.open(n);
+}
+
+function fmtDate(d){
+  try{const dt=d instanceof Date?d:new Date(d);return dt.toLocaleDateString("ru-RU",{timeZone:"Europe/Moscow",day:"2-digit",month:"2-digit"})}
+  catch(e){return ""}
+}
+function esc(s){return String(s||"").replace(/[<>&"']/g,c=>({"<":"&lt;",">":"&gt;","&":"&amp;",'"':"&quot;","'":"&#39;"}[c]))}
+async function loadNewsPreview(){
+  const track=document.getElementById("heroNewsTrack");
+  if(!track) return;
+  const list=await VSRF_NEWS.fetchNews(6);
+  PREVIEW=list||[];
+  if(!list||!list.length){
+    track.innerHTML=`<span class="hero-v4-newsline-hint">Публикаций пока нет</span>`;
+    track.dataset.count="0";
+    return;
+  }
+  const PLACEHOLDER='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect fill="%232a4838" width="100" height="100"/><text x="50" y="55" text-anchor="middle" font-family="serif" font-size="34" fill="%23cda85a" opacity="0.7">★</text></svg>';
+  const show=list.slice(0,4);
+  track.dataset.count=String(show.length);
+  track.innerHTML=show.map(n=>{
+    const img=VSRF_NEWS.firstImage(n)||PLACEHOLDER;
+    const title=esc(n.title||"Без заголовка");
+    const body=esc((n.body||"").slice(0,120));
+    return `<button class="hero-v4-news-card" data-news-id="${n.id}" title="${title}">
+      <span class="hero-v4-news-thumb"><img src="${esc(img)}" alt="" loading="lazy"></span>
+      <span class="hero-v4-news-body">
+        <span class="hero-v4-news-date">${fmtDate(n.date)}</span>
+        <span class="hero-v4-news-title">${title}</span>
+        <span class="hero-v4-news-excerpt">${body}</span>
+      </span>
+    </button>`;
+  }).join("");
+  track.querySelectorAll("[data-news-id]").forEach(b=>b.addEventListener("click",()=>openNews(b.dataset.newsId)));
+}
+
+if(window.VSRF_AUTH) window.VSRF_AUTH.onChange(()=>loadNewsPreview());
+else loadNewsPreview();
+
+(function heroParticles(){
+  const c=document.getElementById("heroParticles");if(!c) return;
+  if(window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const ctx=c.getContext("2d");
+  let W=0,H=0,parts=[],raf=0;
+  function resize(){
+    const dpr=Math.min(window.devicePixelRatio||1,2);
+    W=c.width=c.clientWidth*dpr;H=c.height=c.clientHeight*dpr;
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    const w=c.clientWidth,h=c.clientHeight;
+    const N=Math.min(60,Math.max(20,Math.round(w*h/22000)));
+    parts=[];
+    for(let i=0;i<N;i++) parts.push(spawn(w,h,true));
+  }
+  function spawn(w,h,initial){
+    return {
+      x:Math.random()*w,
+      y:initial?Math.random()*h:h+10,
+      vx:(Math.random()-.5)*.3,
+      vy:-.15-Math.random()*.4,
+      r:.6+Math.random()*1.8,
+      a:.15+Math.random()*.4,
+      phase:Math.random()*Math.PI*2,
+      tw:.003+Math.random()*.01
+    };
+  }
+  function loop(){
+    raf=requestAnimationFrame(loop);
+    const w=c.clientWidth,h=c.clientHeight;
+    ctx.clearRect(0,0,w,h);
+    for(let i=parts.length-1;i>=0;i--){
+      const p=parts[i];
+      p.phase+=p.tw;
+      p.x+=p.vx+Math.sin(p.phase)*.15;
+      p.y+=p.vy;
+      const alpha=p.a*(0.6+Math.sin(p.phase*2)*0.4);
+      ctx.beginPath();
+      ctx.fillStyle=`rgba(240,216,155,${alpha})`;
+      ctx.shadowBlur=8;ctx.shadowColor="rgba(205,168,90,0.6)";
+      ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fill();
+      if(p.y<-20||p.x<-20||p.x>w+20){parts.splice(i,1);parts.push(spawn(w,h,false))}
+    }
+    ctx.shadowBlur=0;
+  }
+  resize();
+  window.addEventListener("resize",resize);
+  loop();
+
+  const emblem=document.getElementById("heroEmblem");
+  if(emblem){
+    const three=emblem.querySelector(".hero-v4-emblem-3d");
+    emblem.addEventListener("mousemove",e=>{
+      const r=emblem.getBoundingClientRect();
+      const rx=((e.clientY-r.top)/r.height-.5)*-20;
+      const ry=((e.clientX-r.left)/r.width-.5)*20;
+      three.style.transform=`rotateX(${rx}deg) rotateY(${ry}deg) scale(1.05)`;
+    });
+    emblem.addEventListener("mouseleave",()=>{three.style.transform=""});
+  }
+})();
+
+(function ensureSettingsPanel(){
+  document.querySelectorAll("[data-open-settings]").forEach(el=>{
+    if(el.dataset.spBound) return;el.dataset.spBound="1";
+    el.addEventListener("click",e=>{e.preventDefault();e.stopPropagation();if(window.VSRF_SETTINGS_PANEL) window.VSRF_SETTINGS_PANEL.open();else alert("Панель настроек загружается...")});
+  });
+})();
+
+(function initBgSettings(){
+  function apply(){
+    if(!window.VSRF_BG) return;
+    const anim=document.getElementById("fsAnim");
+    const modes=document.querySelectorAll(".fs-mode");
+    const en=window.VSRF_BG.isEnabled();
+    const cur=window.VSRF_BG.getMode();
+    if(anim) anim.checked=en;
+    modes.forEach(m=>{
+      m.classList.toggle("active",m.dataset.bg===cur);
+      m.disabled=false;
+    });
+  }
+  function bind(){
+    const anim=document.getElementById("fsAnim");
+    const modes=document.querySelectorAll(".fs-mode");
+    if(!anim) return;
+    anim.addEventListener("change",()=>{window.VSRF_BG&&window.VSRF_BG.setEnabled(anim.checked);apply()});
+    modes.forEach(m=>m.addEventListener("click",()=>{
+      if(!window.VSRF_BG) return;
+      window.VSRF_BG.setMode(m.dataset.bg);apply();
+    }));
+  }
+  if(window.VSRF_BG){bind();apply()}
+  else document.addEventListener("vsrf-bg-ready",()=>{bind();apply()});
+})();
+
+(function initSoundSettings(){
+  const s=document.getElementById("fsSound");
+  const v=document.getElementById("fsSoundVol");
+  const vv=document.getElementById("fsSoundVolVal");
+  if(!s||!window.VSRF_SOUND) return;
+  s.checked=VSRF_SOUND.isEnabled();
+  v.value=VSRF_SOUND.getVolume();
+  vv.textContent=Math.round(VSRF_SOUND.getVolume()*100)+"%";
+  s.addEventListener("change",()=>VSRF_SOUND.setEnabled(s.checked));
+  v.addEventListener("input",()=>{VSRF_SOUND.setVolume(v.value);vv.textContent=Math.round(v.value*100)+"%"});
+})();
+</script>
+
+
+
+</body></html>

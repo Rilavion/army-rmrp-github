@@ -1,0 +1,207 @@
+<!DOCTYPE html><html lang="ru"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="favicon/favicon.ico" sizes="any">
+<link rel="icon" href="favicon/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="favicon/favicon.png">
+<title>ВС РФ — Запрос на поставку</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&amp;family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css?v=150">
+<style id="vsrf-admin-guard">
+[data-admin]{display:none !important}
+[data-staff]{display:none !important}
+body.vsrf-is-admin .nav a[data-admin]{display:inline-flex !important}
+body.vsrf-is-staff .nav a[data-staff]{display:inline-flex !important}
+body.vsrf-is-admin [data-admin]:not(.nav a){display:initial !important}
+body.vsrf-is-staff [data-staff]:not(.nav a){display:initial !important}
+</style>
+<link rel="stylesheet" href="css/stability.css">
+</head>
+<body>
+<canvas id="bgCanvas"></canvas>
+<div class="bg-noise"></div>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="index.html">
+      <div class="brand-icon"><img src="favicon/favicon.png" alt="ВС"></div>
+      <div class="brand-text"><span class="brand-label">Вооружённые Силы РФ</span><span class="brand-name">1-я МСБр · Поставки</span></div>
+    </a>
+    <nav class="nav" id="mainNav">
+<a href="accounts-review.html" data-page="accounts-review.html" data-perm="registration:review" data-loggedin="">Регистрация сотрудников</a>
+<a href="index.html" data-page="index.html">Главная</a>
+<a href="info.html" data-page="info.html">Информация</a>
+<a href="ustav.html" data-page="ustav.html">Уставы</a>
+<a href="composition.html" data-page="composition.html">Состав</a>
+<a href="news.html" data-page="news.html">Новости</a>
+<a href="autopark.html" data-page="autopark.html">Автопарк</a>
+<a href="map.html" data-page="map.html">Карта</a>
+<a href="faq.html" data-page="faq.html">FAQ</a>
+<a href="complaints.html" data-page="complaints.html">Жалобы</a>
+<a href="tests.html" data-page="tests.html" data-loggedin="">Тестирование</a>
+<a href="leave.html" data-page="leave.html" data-loggedin="">Увольнительная</a>
+<a href="vacation-ic.html" data-page="vacation-ic.html" data-loggedin="">Отпуск IC</a>
+<a href="vacation-ooc.html" data-page="vacation-ooc.html" data-loggedin="">Отпуск OOC</a>
+<a href="dismissal.html" data-page="dismissal.html" data-loggedin="">Увольнение</a>
+<a href="promotion.html" data-page="promotion.html" data-loggedin="">Повышение</a>
+<a href="restoration.html" data-page="restoration.html" data-loggedin="">Восстановление в ВС РФ</a>
+<a href="report.html" data-page="report.html" data-loggedin="">Еженедельный отчёт</a>
+<a href="vp-request.html" data-page="vp-request.html" data-perm="vp_request:submit" data-loggedin="">Запрос на наказание</a>
+<a href="docs.html" data-page="docs.html" data-perm="docs:view" data-loggedin="">Документы</a>
+<a href="supply.html" data-page="supply.html" data-perm="supply:view" data-loggedin="">Запрос поставки</a>
+<a href="supply-report.html" data-page="supply-report.html" data-perm="supply:view" data-loggedin="">Учёт поставок</a>
+<a href="supply-stats.html" data-page="supply-stats.html" data-perm="supply:stats" data-loggedin="">Статистика поставок</a>
+<a href="supply-admin.html" data-page="supply-admin.html" data-perm="supply:admin" data-loggedin="">Настройки поставок</a>
+<a href="requests-review.html" data-page="requests-review.html" data-perm="requests:review,requests:view" data-loggedin="">Заявки</a>
+<a href="requests-stats.html" data-page="requests-stats.html" data-perm="requests:review,requests:view" data-loggedin="">Статистика заявок</a>
+<a href="requests-settings.html" data-page="requests-settings.html" data-perm="requests:settings" data-loggedin="">Настройки заявок</a>
+<a href="vp.html" data-page="vp.html" data-perm="vp:view" data-loggedin="">Проверки ВП</a>
+<a href="complaints-review.html" data-page="complaints-review.html" data-perm="complaints:review,complaints:view" data-loggedin="">Рассмотрение жалоб</a>
+<a href="complaints-stats.html" data-page="complaints-stats.html" data-perm="complaints:review,complaints:view" data-loggedin="">Статистика жалоб</a>
+<a href="complaints-form.html" data-page="complaints-form.html" data-perm="complaints:form_edit,complaints:settings" data-loggedin="">Редактор жалобы</a>
+<a href="complaints-settings.html" data-page="complaints-settings.html" data-perm="complaints:settings" data-loggedin="">Настройки жалоб</a>
+<a href="payroll.html" data-page="payroll.html" data-perm="payroll:view" data-loggedin="">Реестр премирования</a>
+<a href="report-settings.html" data-page="report-settings.html" data-perm="report:settings" data-loggedin="">Настройки отчётов</a>
+<a href="vp-request-settings.html" data-page="vp-request-settings.html" data-perm="vp_request:settings" data-loggedin="">Настройки запросов ВП</a>
+<a href="roles.html" data-page="roles.html" data-perm="lk:roles" data-loggedin="">Роли и права</a>
+<a href="integrations.html" data-page="integrations.html" data-perm="lk:roles" data-loggedin="">Уведомления Discord</a>
+<a href="lk.html" data-page="lk.html" data-loggedin="">Личный кабинет</a>
+</nav><div class="header-actions" style="margin-left:auto">
+      <a href="index.html" data-page="index.html" class="btn btn-ghost btn-sm">← Главная</a>
+      <a href="supply-stats.html" data-page="supply-stats.html" class="btn btn-ghost btn-sm" data-staff="">📊 Статистика</a>
+      <a href="supply-admin.html" data-page="supply-admin.html" class="btn btn-gold btn-sm" data-admin="">⚙ Настройка формы</a>
+      <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Сменить тему">
+        <svg class="moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+        <svg class="sun" viewBox="0 0 24 24"><path d="M12 4V2m0 20v-2m8-8h2M2 12h2m13.66-5.66l1.42-1.42M4.92 19.08l1.42-1.42m0-11.32L4.92 4.92m14.16 14.16l-1.42-1.42M12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg>
+      </button>
+      <button class="login-btn" data-open-login=""><svg viewBox="0 0 24 24"><path d="M12 12a5 5 0 1 0-5-5 5 5 0 0 0 5 5zm0 2c-3.33 0-10 1.67-10 5v3h20v-3c0-3.33-6.67-5-10-5z"></path></svg><span>Войти</span></button>
+    <button class="burger" id="burger" aria-label="Меню" aria-expanded="false" aria-controls="mainNav"><span></span><span></span><span></span></button></div>
+  </div>
+</header>
+
+<main>
+  <section class="apps-head">
+    <div class="container">
+      <div class="apps-head-ribbon">
+        <span class="apps-head-ribbon-line"></span><span class="apps-head-ribbon-emblem">◈</span>
+        <span class="apps-head-ribbon-name">Поставки · Запросы снабжения</span>
+        <span class="apps-head-ribbon-emblem">◈</span><span class="apps-head-ribbon-line"></span>
+      </div>
+      <h1 class="apps-head-title" id="sfTitle">Запрос на поставку</h1>
+      <div class="apps-head-subtitle" id="sfIntro">Заполните форму — заявка автоматически уйдёт снабженцам в Discord</div>
+    </div>
+  </section>
+
+  <section class="apps-body">
+    <div class="container">
+      <div id="sfRoot"><div class="apps-empty">Загрузка формы...</div></div>
+    </div>
+  </section>
+</main>
+
+
+
+<footer class="footer"><div class="container"><div class="footer-bottom"><span>© <span id="year"></span> · 1-я МСБр · в/ч №12132</span></div></div></footer>
+
+<script src="js/core/api-client.js?v=145"></script>
+<script src="js/core/config.js?v=145"></script>
+<script src="js/core/auth.js?v=145"></script><script src="js/core/directory.js"></script>
+<script src="js/core/roles-engine.js?v=145"></script>
+<script src="js/features/supply-engine.js?v=145"></script>
+<script src="js/ui/navigation.js"></script><script src="js/ui/main.js?v=150"></script>
+<script src="js/utils/format-utils.js?v=145"></script>
+<script>
+document.getElementById("year").textContent=new Date().getFullYear();
+const $=id=>document.getElementById(id);
+const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const root=$("sfRoot");
+let FORM=null;
+
+async function boot(){
+  FORM=await VSRF_SUPPLY.fetchForm();
+  if(!FORM){root.innerHTML=`<div class="apps-empty"><h3>Форма не настроена</h3><p>Обратитесь к администратору.</p></div>`;return}
+  $("sfTitle").textContent=FORM.title||"Запрос на поставку";
+  if(FORM.intro) $("sfIntro").textContent=FORM.intro;
+  renderForm();
+}
+
+function renderField(f){
+  const req=f.required?' <span class="sf-req">*</span>':' <span class="sf-opt">(необязательно)</span>';
+  const ph=f.placeholder?` placeholder="${esc(f.placeholder)}"`:"";
+  if(f.type==="textarea") return `<div class="form-group"><label>${esc(f.label)}${req}</label><textarea data-fk="${esc(f.key)}" class="msg-input msg-textarea msg-textarea-sm"${ph}></textarea></div>`;
+  if(f.type==="number") return `<div class="form-group"><label>${esc(f.label)}${req}</label><input type="number" data-fk="${esc(f.key)}" class="msg-input"${ph}></div>`;
+  if(f.type==="date") return `<div class="form-group"><label>${esc(f.label)}${req}</label><input type="date" data-fk="${esc(f.key)}" class="msg-input"></div>`;
+  if(f.type==="checkbox") return `<div class="form-group"><label class="doc-toggle-row"><input type="checkbox" data-fk="${esc(f.key)}"><span>${esc(f.label)}${req}</span></label></div>`;
+  if(f.type==="select"){
+    const opts=(f.options||[]).map(o=>`<option value="${esc(o)}">${esc(o)}</option>`).join("");
+    return `<div class="form-group"><label>${esc(f.label)}${req}</label><select data-fk="${esc(f.key)}" class="msg-input"><option value="">— выбери —</option>${opts}</select></div>`;
+  }
+  return `<div class="form-group"><label>${esc(f.label)}${req}</label><input type="text" data-fk="${esc(f.key)}" class="msg-input"${ph}></div>`;
+}
+
+function renderForm(){
+  const fields=FORM.fields||[];
+  root.innerHTML=`
+    <div class="sf-card">
+      <div class="sf-card-title">👤 Ваши данные</div>
+      <div class="form-group"><label>ФИО (персонажа) <span class="sf-req">*</span></label><input type="text" id="uFio" class="msg-input" placeholder="Иван Иванов"></div>
+      <div class="msg-row">
+        <div class="form-group msg-flex-1"><label>Статик <span class="sf-req">*</span> <span class="msg-help">формат 000-000</span></label><input type="text" id="uStatic" class="msg-input" placeholder="123-456" maxlength="7"></div>
+        <div class="form-group msg-flex-1"><label>Discord <span class="sf-opt">(необязательно)</span> <span class="msg-help">для пинга при готовности</span></label><input type="text" id="uDiscord" class="msg-input" placeholder="@username"></div>
+      </div>
+    </div>
+    <div class="sf-card">
+      <div class="sf-card-title">📋 Данные поставки</div>
+      ${fields.map(renderField).join("")}
+    </div>
+    <div class="sf-actions">
+      <div class="form-msg" id="sfMsg"></div>
+      <button class="btn btn-gold" id="sfSubmit" style="padding:14px 32px;font-size:16px">📤 Отправить запрос</button>
+    </div>
+  `;
+  $("uStatic").addEventListener("input",e=>{
+    let v=e.target.value.replace(/\D/g,"");
+    if(v.length>3) v=v.slice(0,3)+"-"+v.slice(3,6);
+    e.target.value=v;
+  });
+  $("sfSubmit").addEventListener("click",submitForm);
+}
+
+async function submitForm(){
+  const msg=$("sfMsg");
+  const fio=$("uFio").value.trim();
+  const st=$("uStatic").value.trim();
+  const dc=$("uDiscord").value.trim();
+  if(!fio){msg.className="form-msg error";msg.textContent="Введите ФИО";return}
+  if(!VSRF_SUPPLY.validStatic(st)){msg.className="form-msg error";msg.textContent="Статик 000-000";return}
+  const vals={};
+  for(const f of (FORM.fields||[])){
+    const el=document.querySelector(`[data-fk="${f.key}"]`);
+    if(!el) continue;
+    let v=el.type==="checkbox"?el.checked:el.value;
+    if(f.required&&(v===""||v==null||v===false)){msg.className="form-msg error";msg.textContent="Заполните: "+f.label;return}
+    vals[f.key]=v;
+  }
+  msg.className="form-msg info";msg.textContent="Отправка...";
+  $("sfSubmit").disabled=true;
+  const r=await VSRF_SUPPLY.submit({fio,static_id:st,discord:dc,values:vals});
+  if(!r.ok){msg.className="form-msg error";msg.textContent=r.error;$("sfSubmit").disabled=false;return}
+  root.innerHTML=`<div class="sf-success">
+    <div class="sf-success-icon">✅</div>
+    <div class="sf-success-title">Запрос отправлен!</div>
+    <div class="sf-success-sub">Ваша заявка отправлена снабженцам в Discord. Ожидайте ответа.</div>
+    <div class="sf-success-acts">
+      <a class="btn btn-ghost" href="index.html">На главную</a>
+      <button class="btn btn-gold" data-reload-page>📝 Ещё запрос</button>
+    </div>
+  </div>`;
+}
+
+boot();
+</script>
+
+
+
+<script src="js/ui/settings-panel.js"></script></body></html>

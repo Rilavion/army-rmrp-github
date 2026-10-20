@@ -1,0 +1,341 @@
+<!DOCTYPE html><html lang="ru"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="favicon/favicon.ico" sizes="any">
+<link rel="icon" href="favicon/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="favicon/favicon.png">
+<title>Еженедельный отчёт · ВС РФ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&amp;family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css?v=150">
+<link rel="stylesheet" href="css/stability.css">
+</head>
+<body>
+<canvas id="bgCanvas"></canvas>
+<div class="bg-noise"></div>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="index.html">
+      <div class="brand-icon"><img src="favicon/favicon.png" alt="ВС"></div>
+      <div class="brand-text">
+        <span class="brand-label">Отчётность</span>
+        <span class="brand-name">Еженедельный отчёт</span>
+      </div>
+    </a>
+    <nav class="nav" id="mainNav">
+<a href="accounts-review.html" data-page="accounts-review.html" data-perm="registration:review" data-loggedin="">Регистрация сотрудников</a>
+<a href="index.html" data-page="index.html">Главная</a>
+<a href="info.html" data-page="info.html">Информация</a>
+<a href="ustav.html" data-page="ustav.html">Уставы</a>
+<a href="composition.html" data-page="composition.html">Состав</a>
+<a href="news.html" data-page="news.html">Новости</a>
+<a href="autopark.html" data-page="autopark.html">Автопарк</a>
+<a href="map.html" data-page="map.html">Карта</a>
+<a href="faq.html" data-page="faq.html">FAQ</a>
+<a href="complaints.html" data-page="complaints.html">Жалобы</a>
+<a href="tests.html" data-page="tests.html" data-loggedin="">Тестирование</a>
+<a href="leave.html" data-page="leave.html" data-loggedin="">Увольнительная</a>
+<a href="vacation-ic.html" data-page="vacation-ic.html" data-loggedin="">Отпуск IC</a>
+<a href="vacation-ooc.html" data-page="vacation-ooc.html" data-loggedin="">Отпуск OOC</a>
+<a href="dismissal.html" data-page="dismissal.html" data-loggedin="">Увольнение</a>
+<a href="promotion.html" data-page="promotion.html" data-loggedin="">Повышение</a>
+<a href="restoration.html" data-page="restoration.html" data-loggedin="">Восстановление в ВС РФ</a>
+<a href="report.html" data-page="report.html" data-loggedin="">Еженедельный отчёт</a>
+<a href="vp-request.html" data-page="vp-request.html" data-perm="vp_request:submit" data-loggedin="">Запрос на наказание</a>
+<a href="docs.html" data-page="docs.html" data-perm="docs:view" data-loggedin="">Документы</a>
+<a href="supply.html" data-page="supply.html" data-perm="supply:view" data-loggedin="">Запрос поставки</a>
+<a href="supply-report.html" data-page="supply-report.html" data-perm="supply:view" data-loggedin="">Учёт поставок</a>
+<a href="supply-stats.html" data-page="supply-stats.html" data-perm="supply:stats" data-loggedin="">Статистика поставок</a>
+<a href="supply-admin.html" data-page="supply-admin.html" data-perm="supply:admin" data-loggedin="">Настройки поставок</a>
+<a href="requests-review.html" data-page="requests-review.html" data-perm="requests:review,requests:view" data-loggedin="">Заявки</a>
+<a href="requests-stats.html" data-page="requests-stats.html" data-perm="requests:review,requests:view" data-loggedin="">Статистика заявок</a>
+<a href="requests-settings.html" data-page="requests-settings.html" data-perm="requests:settings" data-loggedin="">Настройки заявок</a>
+<a href="vp.html" data-page="vp.html" data-perm="vp:view" data-loggedin="">Проверки ВП</a>
+<a href="complaints-review.html" data-page="complaints-review.html" data-perm="complaints:review,complaints:view" data-loggedin="">Рассмотрение жалоб</a>
+<a href="complaints-stats.html" data-page="complaints-stats.html" data-perm="complaints:review,complaints:view" data-loggedin="">Статистика жалоб</a>
+<a href="complaints-form.html" data-page="complaints-form.html" data-perm="complaints:form_edit,complaints:settings" data-loggedin="">Редактор жалобы</a>
+<a href="complaints-settings.html" data-page="complaints-settings.html" data-perm="complaints:settings" data-loggedin="">Настройки жалоб</a>
+<a href="payroll.html" data-page="payroll.html" data-perm="payroll:view" data-loggedin="">Реестр премирования</a>
+<a href="report-settings.html" data-page="report-settings.html" data-perm="report:settings" data-loggedin="">Настройки отчётов</a>
+<a href="vp-request-settings.html" data-page="vp-request-settings.html" data-perm="vp_request:settings" data-loggedin="">Настройки запросов ВП</a>
+<a href="roles.html" data-page="roles.html" data-perm="lk:roles" data-loggedin="">Роли и права</a>
+<a href="integrations.html" data-page="integrations.html" data-perm="lk:roles" data-loggedin="">Уведомления Discord</a>
+<a href="lk.html" data-page="lk.html" data-loggedin="">Личный кабинет</a>
+</nav>
+    <div class="header-actions">
+      <a href="lk.html" class="btn btn-ghost btn-sm">Личный кабинет</a>
+      <button class="burger" id="burger" aria-label="Меню"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="apps-head">
+    <div class="container">
+      <div class="apps-head-ribbon"><span class="apps-head-ribbon-line"></span><span class="apps-head-ribbon-emblem">◈</span><span class="apps-head-ribbon-name">Еженедельный отчёт</span><span class="apps-head-ribbon-emblem">◈</span><span class="apps-head-ribbon-line"></span></div>
+      <h1 class="apps-head-title">Еженедельный отчёт</h1>
+      <div class="apps-head-subtitle">Выбери шаблон для своего подразделения и заполни поля</div>
+    </div>
+  </section>
+
+  <section class="apps-body">
+    <div class="container" style="max-width:900px">
+      <div id="repGuard" style="display:none">
+        <div class="apps-guard-box"><div class="apps-guard-icon">📭</div><h2>Форма недоступна</h2><p>Администратор ещё не настроил ни один шаблон отчёта.</p></div>
+      </div>
+
+      <div id="repRoot" style="display:none">
+        <div class="stats-filters" style="margin-bottom:16px">
+          <div class="stats-filters-grid" style="grid-template-columns:1fr">
+            <div class="stats-filter">
+              <label>Шаблон отчёта</label>
+              <select id="repFormSel"></select>
+            </div>
+          </div>
+        </div>
+
+        <form id="repForm" class="apps-form" onsubmit="return false">
+          <div class="cf-group">
+            <div class="cf-group-title">👤 Данные подающего</div>
+            <div class="cf-group-body">
+              <div class="msg-row">
+                <div class="form-group msg-flex-1"><label>ФИО <span style="color:#e97a7a">*</span></label><input class="msg-input" id="repFio" required="" placeholder="Начните вводить ФИО..." data-dsac="" data-dsac-stat="#repStatic" data-dsac-pos="#repPos"></div>
+                <div class="form-group msg-flex-1"><label>Статик <span style="color:#e97a7a">*</span></label><input class="msg-input" id="repStatic" required="" placeholder="123-456"></div>
+              </div>
+              <div class="form-group"><label>Должность / Звание <span style="color:#e97a7a">*</span></label><input class="msg-input" id="repPos" required="" placeholder="Сержант · Командир отделения"></div>
+            </div>
+          </div>
+
+          <div id="repDynamic"></div>
+
+          <div class="apps-cfg-actions" style="margin-top:20px">
+            <button type="button" class="btn btn-gold" id="repSend">📤 Отправить отчёт</button>
+            <button type="button" class="btn btn-ghost btn-sm" id="repClear">✕ Очистить</button>
+            <span class="stats-copy-msg" id="repMsg"></span>
+          </div>
+        </form>
+
+        <div id="repHistory" style="margin-top:24px"></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+
+
+<footer class="footer"><div class="container"><div class="footer-bottom"><span>© <span id="year"></span> · 1-я МСБр · в/ч №12132</span></div></div></footer>
+
+<script src="js/core/api-client.js?v=149"></script>
+<script src="js/core/config.js?v=149"></script>
+<script src="js/core/auth.js?v=149"></script><script src="js/core/directory.js"></script>
+<script src="js/core/roles-engine.js?v=149"></script>
+<script src="js/features/ds-autocomplete.js?v=150"></script>
+<script src="js/ui/navigation.js"></script>
+<script src="js/ui/main.js?v=150"></script>
+<script src="js/utils/format-utils.js?v=149"></script>
+<script src="js/ui/holiday-engine.js?v=149"></script>
+<script src="js/ui/settings-panel.js?v=149"></script>
+<script src="js/ui/sound-engine.js?v=149"></script>
+<script src="js/ui/search-engine.js?v=149"></script>
+<script src="js/utils/ds-cache.js?v=149"></script>
+<script src="js/ui/notify-engine.js?v=149"></script>
+<script src="js/ui/notify-live.js?v=149"></script>
+<script>
+document.getElementById("year").textContent=new Date().getFullYear();
+const $=id=>document.getElementById(id);
+const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+const LS_KEY="vsrf_report_draft_v1";
+let FORMS=[], CURFORM=null;
+
+async function boot(){
+  $("repGuard").style.display="none"; $("repRoot").style.display="";
+  await loadForms();
+  restoreDraft();
+}
+
+async function loadForms(){
+  const c=window.VSRF_AUTH.state.client;
+  const {data,error}=await c.from("report_forms").select("*").eq("active",true).order("sort_order").order("label");
+  if(error){ $("repMsg").className="stats-copy-msg err"; $("repMsg").textContent="Ошибка загрузки шаблонов: "+error.message; return; }
+  FORMS=data||[];
+  if(!FORMS.length){
+    $("repDynamic").innerHTML='<div class="apps-guard-box" style="margin-top:20px"><div class="apps-guard-icon">📭</div><h2>Нет шаблонов</h2><p>Администратор ещё не настроил ни один шаблон отчёта. Обратитесь к нему.</p></div>';
+    return;
+  }
+  const cur=localStorage.getItem(LS_KEY+"_form")||FORMS[0].id;
+  $("repFormSel").innerHTML=FORMS.map(f=>`<option value="${esc(f.id)}" ${f.id===cur?"selected":""}>${esc(f.icon||"📋")} ${esc(f.label)}</option>`).join("");
+  $("repFormSel").addEventListener("change",()=>{
+    localStorage.setItem(LS_KEY+"_form",$("repFormSel").value);
+    selectForm($("repFormSel").value);
+  });
+  selectForm(cur);
+}
+
+function selectForm(id){
+  CURFORM=FORMS.find(f=>f.id===id)||FORMS[0];
+  if(!CURFORM){ $("repDynamic").innerHTML=""; return; }
+  renderFields();
+}
+
+function renderFields(){
+  const fields=Array.isArray(CURFORM.fields)?CURFORM.fields:[];
+  if(!fields.length){ $("repDynamic").innerHTML='<div class="cf-group"><div class="cf-group-body"><div class="msg-help">В этом шаблоне ещё нет полей.</div></div></div>'; return; }
+  const html=`<div class="cf-group">
+    <div class="cf-group-title">📝 ${esc(CURFORM.label)}</div>
+    <div class="cf-group-body">
+      ${fields.map(f=>renderField(f)).join("")}
+    </div>
+  </div>`;
+  $("repDynamic").innerHTML=html;
+}
+
+function renderField(f){
+  const key=esc(f.key||"");
+  const lbl=esc(f.label||f.key||"—");
+  const req=f.required?`<span style="color:#e97a7a">*</span>`:"";
+  const ph=esc(f.placeholder||"");
+  const help=f.help?`<div class="msg-help">${esc(f.help)}</div>`:"";
+  const t=f.type||"text";
+  const id="repF_"+key;
+  if(t==="textarea"){
+    const rows=Math.max(2,parseInt(f.rows)||4);
+    return `<div class="form-group"><label>${lbl} ${req}</label><textarea id="${id}" class="msg-input" rows="${rows}" placeholder="${ph}"></textarea>${help}</div>`;
+  }
+  if(t==="select"){
+    const opts=Array.isArray(f.options)?f.options:[];
+    return `<div class="form-group"><label>${lbl} ${req}</label><select id="${id}" class="msg-input"><option value="">— выбрать —</option>${opts.map(o=>`<option value="${esc(o)}">${esc(o)}</option>`).join("")}</select>${help}</div>`;
+  }
+  if(t==="checkbox"){
+    return `<div class="form-group"><label style="cursor:pointer"><input type="checkbox" id="${id}" style="margin-right:8px;transform:scale(1.2)">${lbl} ${req}</label>${help}</div>`;
+  }
+  const inputType={number:"number",date:"date",url:"url",text:"text"}[t]||"text";
+  return `<div class="form-group"><label>${lbl} ${req}</label><input type="${inputType}" id="${id}" class="msg-input" placeholder="${ph}">${help}</div>`;
+}
+
+function collectValues(){
+  const fields=Array.isArray(CURFORM.fields)?CURFORM.fields:[];
+  const values={};
+  const missing=[];
+  for(const f of fields){
+    const el=$("repF_"+f.key);
+    if(!el) continue;
+    let v=null;
+    if(f.type==="checkbox") v=el.checked;
+    else v=el.value;
+    if(f.required && (v===null || v==="" || v===false)) missing.push(f.label||f.key);
+    values[f.key]=v;
+  }
+  return { values, missing };
+}
+
+function saveDraft(){
+  try{
+    const state={ form:CURFORM&&CURFORM.id, fio:$("repFio").value, static:$("repStatic").value, pos:$("repPos").value };
+    if(CURFORM){
+      state.values={};
+      for(const f of (CURFORM.fields||[])){
+        const el=$("repF_"+f.key);
+        if(!el) continue;
+        state.values[f.key]=f.type==="checkbox"?el.checked:el.value;
+      }
+    }
+    localStorage.setItem(LS_KEY,JSON.stringify(state));
+  }catch(e){}
+}
+function restoreDraft(){
+  try{
+    const s=JSON.parse(localStorage.getItem(LS_KEY)||"{}");
+    if(s.fio) $("repFio").value=s.fio;
+    if(s.static) $("repStatic").value=s.static;
+    if(s.pos) $("repPos").value=s.pos;
+    if(s.values && CURFORM){
+      for(const k of Object.keys(s.values)){
+        const el=$("repF_"+k);
+        if(!el) continue;
+        if(el.type==="checkbox") el.checked=!!s.values[k];
+        else el.value=s.values[k]||"";
+      }
+    }
+  }catch(e){}
+}
+
+$("repFio").addEventListener("input",saveDraft);
+$("repStatic").addEventListener("input",saveDraft);
+$("repPos").addEventListener("input",saveDraft);
+$("repDynamic").addEventListener("input",saveDraft);
+$("repDynamic").addEventListener("change",saveDraft);
+
+$("repClear").addEventListener("click",()=>{
+  if(!confirm("Очистить всю форму?")) return;
+  localStorage.removeItem(LS_KEY);
+  $("repFio").value=""; $("repStatic").value=""; $("repPos").value="";
+  renderFields();
+});
+
+$("repSend").addEventListener("click",async()=>{
+  const msg=$("repMsg");
+  if(!CURFORM){ msg.className="stats-copy-msg err"; msg.textContent="Выбери шаблон"; return; }
+  const fio=$("repFio").value.trim(), stat=$("repStatic").value.trim(), pos=$("repPos").value.trim();
+  if(!fio||!stat||!pos){ msg.className="stats-copy-msg err"; msg.textContent="Заполни ФИО, Статик и Должность"; return; }
+  const {values,missing}=collectValues();
+  if(missing.length){ msg.className="stats-copy-msg err"; msg.textContent="Заполни: "+missing.join(", "); return; }
+
+  msg.className="stats-copy-msg info"; msg.textContent="⏳ Отправка…";
+  $("repSend").disabled=true;
+  try{
+    const c=window.VSRF_AUTH.state.client;
+    const user=window.VSRF_AUTH.state&&window.VSRF_AUTH.state.user;
+    const row={
+      form_id:CURFORM.id,
+      submitter_uid:user?user.id:null,
+      submitter_email:user?(user.email||null):null,
+      submitter_fio:fio, submitter_static:stat, submitter_position:pos,
+      values, status:"pending"
+    };
+    const {data,error}=await c.from("report_send_requests").insert(row).select().single();
+    if(error) throw error;
+    msg.className="stats-copy-msg ok"; msg.textContent="✓ Отчёт в очереди. Доставка зависит от настройки вебхука.";
+    pollStatus(data.id);
+  }catch(e){
+    msg.className="stats-copy-msg err"; msg.textContent="✗ "+e.message;
+  } finally {
+    $("repSend").disabled=false;
+  }
+});
+
+async function pollStatus(id){
+  const c=window.VSRF_AUTH.state.client;
+  const msg=$("repMsg");
+  const isLogged=window.VSRF_AUTH.state&&window.VSRF_AUTH.state.user;
+  if(!isLogged){
+    msg.className="stats-copy-msg ok"; msg.textContent="✓ Отчёт отправлен. Доставка ожидается в настроенный канал Discord.";
+    localStorage.removeItem(LS_KEY);
+    return;
+  }
+  for(let i=0;i<20;i++){
+    await new Promise(r=>setTimeout(r,3000));
+    const {data}=await c.from("report_send_requests").select("status,message,ds_message_id").eq("id",id).maybeSingle();
+    if(!data) continue;
+    if(data.status==="done"){
+      msg.className="stats-copy-msg ok"; msg.textContent="✓ Опубликовано в Discord!";
+      localStorage.removeItem(LS_KEY);
+      return;
+    }
+    if(data.status==="error"){
+      msg.className="stats-copy-msg err"; msg.textContent="✗ Ошибка доставки: "+(data.message||"неизвестно");
+      return;
+    }
+  }
+  msg.className="stats-copy-msg info"; msg.textContent="⏳ Отчёт в очереди, статус обновится позже. Проверь Discord.";
+}
+
+if(window.VSRF_ROLES) VSRF_ROLES.onChange(boot);
+setTimeout(boot,600);
+</script>
+
+
+
+</body></html>
