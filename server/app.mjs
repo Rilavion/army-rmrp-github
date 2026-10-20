@@ -13,9 +13,10 @@ import {notifyMutation} from './notifications.mjs';
 import {examRPC} from './exams.mjs';
 import {validateSubmission} from './forms.mjs';
 import {supplyLedger} from './supply-ledger.mjs';
+import {accounts,strictStatic} from './accounts.mjs';
 const root=path.resolve(import.meta.dirname,'..');
-const publicUser=u=>u?{id:u.id,email:u.email,user_metadata:u.user_metadata||{},created_at:u.created_at}:null;
-export async function createApp(db,{origin,production=false,key,test=false,storageRoot=path.join(root,'.local/media')}={}){
+const publicUser=u=>u?{id:u.id,email:u.email,static_id:u.static_id||null,user_metadata:u.user_metadata||{},created_at:u.created_at}:null;
+export async function createApp(db,{origin,production=false,key,test=false,registrationEnabled=process.env.REGISTRATION_ENABLED==='true',storageRoot=path.join(root,'.local/media')}={}){
  if(!origin||new URL(origin).origin!==origin||production&&!origin.startsWith('https:'))throw Error('Exact PUBLIC_ORIGIN required; HTTPS in production');
  const app=express();app.disable('x-powered-by');if(process.env.TRUST_PROXY==='1')app.set('trust proxy',1);
  // Hash original inline scripts: retain page behavior without allowing arbitrary inline JS.
@@ -24,17 +25,27 @@ export async function createApp(db,{origin,production=false,key,test=false,stora
  app.use('/api',rateLimit({windowMs:60000,limit:test?10000:240,standardHeaders:true,legacyHeaders:false}));
  app.use('/api',(req,res,next)=>{res.set('Cache-Control','no-store');if(!['GET','HEAD'].includes(req.method)&&req.headers.origin!==origin)return res.status(403).json({error:{message:'Недопустимый источник запроса'}});next();});
  app.use(express.json({limit:'2mb'}));
- app.use(['/api','/media'],async(req,res,next)=>{const raw=String(req.headers.cookie||'').match(/(?:^|;\s*)army_session=([\w-]+)/)?.[1];if(raw){const {rows:[u]}=await db.query(`SELECT u.*,r.role,r.custom_role_id,r.display_name,coalesce(c.permissions,'{}') permissions FROM auth_sessions s JOIN users u ON u.id=s.user_id JOIN user_roles r ON r.user_id=u.id LEFT JOIN custom_roles c ON (r.custom_role_id=c.id OR (r.custom_role_id IS NULL AND c.key=r.role)) WHERE s.token_hash=$1 AND s.expires_at>now() AND NOT u.disabled`,[hash(raw)]);req.user=u;req.sessionHash=hash(raw);}next();});
+ app.use(['/api','/media'],async(req,res,next)=>{const raw=String(req.headers.cookie||'').match(/(?:^|;\s*)army_session=([\w-]+)/)?.[1];if(raw){const {rows:[u]}=await db.query(`SELECT u.*,r.role,r.custom_role_id,r.display_name,coalesce(c.permissions,'{}') permissions FROM auth_sessions s JOIN users u ON u.id=s.user_id JOIN user_roles r ON r.user_id=u.id LEFT JOIN custom_roles c ON (r.custom_role_id=c.id OR (r.custom_role_id IS NULL AND c.key=r.role)) WHERE s.token_hash=$1 AND s.expires_at>now() AND NOT u.disabled AND u.static_id IS NOT NULL`,[hash(raw)]);req.user=u;req.sessionHash=hash(raw);}next();});
  const answer=(res,data)=>res.json({data,error:null});
+ async function issueSession(res,u){
+  const secret=token();
+  await transaction(db,async c=>{
+   const {rows:[current]}=await c.query('SELECT u.disabled,u.password_hash FROM users u JOIN user_roles r ON r.user_id=u.id WHERE u.id=$1 FOR SHARE OF u,r',[u.id]);
+   if(!current||current.disabled||current.password_hash!==u.password_hash)fail(401,'Доступ изменён. Повторите вход');
+   await c.query("INSERT INTO auth_sessions VALUES($1,$2,now()+interval '8 hours')",[hash(secret),u.id]);
+   await audit(c,u,'login','user',u.id);
+  });
+  res.cookie('army_session',secret,{httpOnly:true,sameSite:'strict',secure:production,path:'/',maxAge:28800000});
+  answer(res,{status:'approved',user:publicUser(u),session:{user:publicUser(u)}});
+ }
+ await accounts(app,db,{enabled:registrationEnabled,production,test,issueSession});
  app.get('/api/v1/health',async(req,res)=>{await db.query('SELECT 1');res.json({ok:true});});
  app.get('/api/v1/auth/session',(req,res)=>answer(res,{session:req.user?{user:publicUser(req.user)}:null}));
- const loginLimit=rateLimit({windowMs:900000,limit:test?1000:15,standardHeaders:true,legacyHeaders:false});let dummy=await passwordHash(token());
- app.post('/api/v1/auth/login',loginLimit,async(req,res)=>{const {rows:[u]}=await db.query('SELECT u.* FROM users u JOIN user_roles r ON r.user_id=u.id WHERE lower(u.email)=$1',[text(req.body.email,3,254).toLowerCase()]);const valid=await verifyPassword(req.body.password,u?.password_hash||dummy);if(!u||u.disabled||!valid)fail(401,'Неверная почта или пароль');const secret=token();await db.query("INSERT INTO auth_sessions VALUES($1,$2,now()+interval '8 hours')",[hash(secret),u.id]);res.cookie('army_session',secret,{httpOnly:true,sameSite:'strict',secure:production,path:'/',maxAge:28800000});await audit(db,u,'login','user',u.id);answer(res,{user:publicUser(u),session:{user:publicUser(u)}});});
  app.post('/api/v1/auth/logout',async(req,res)=>{if(req.sessionHash)await db.query('DELETE FROM auth_sessions WHERE token_hash=$1',[req.sessionHash]);res.clearCookie('army_session',{path:'/'});answer(res,{});});
  app.patch('/api/v1/auth/user',async(req,res)=>{if(!req.user)fail(401,'Войдите');if(req.body.password){if(!await verifyPassword(req.body.current_password,req.user.password_hash))fail(403,'Введите текущий пароль');await db.query('UPDATE users SET password_hash=$1 WHERE id=$2',[await passwordHash(req.body.password),req.user.id]);await db.query('DELETE FROM auth_sessions WHERE user_id=$1',[req.user.id]);}answer(res,{user:publicUser(req.user)});});
  const admin=u=>{if(!u)fail(401,'Войдите');if(u.role!=='admin')fail(403,'Только администратор');};
- app.get('/api/v1/auth/admin/users',async(req,res)=>{admin(req.user);answer(res,{users:(await db.query('SELECT id,email,user_metadata,disabled,created_at FROM users')).rows});});
- app.post('/api/v1/auth/admin/users',async(req,res)=>{admin(req.user);const b=req.body,email=text(b.email,3,254).toLowerCase();if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))fail(400,'Некорректная почта');const role=b.role||'user';if(!['user','ss'].includes(role))fail(403,'Администратор создаётся только локальным инструментом');const h=await passwordHash(b.password);const u=await tx(req.user,async c=>{const {rows:[u]}=await c.query('INSERT INTO users(email,password_hash,password_reset_required,user_metadata) VALUES($1,$2,false,$3) RETURNING id,email,user_metadata',[email,h,JSON.stringify({display_name:b.display_name||b.user_metadata?.display_name||''})]);await c.query('SELECT staff_upsert_role($1,$2,$3,$4)',[u.id,role,b.display_name||'',b.custom_role_id||null]);await audit(c,req.user,'create','user',u.id);return u;});answer(res,{user:u});});
+ app.get('/api/v1/auth/admin/users',async(req,res)=>{admin(req.user);answer(res,{users:(await db.query('SELECT id,static_id,user_metadata,disabled,created_at FROM users')).rows});});
+ app.post('/api/v1/auth/admin/users',async(req,res)=>{admin(req.user);const b=req.body,staticId=strictStatic(b.static_id);const role=b.role||'user';if(!['user','ss'].includes(role))fail(403,'Администратор создаётся только локальным инструментом');const h=await passwordHash(b.password);const u=await tx(req.user,async c=>{if((await c.query('SELECT 1 FROM registration_requests WHERE static_id=$1',[staticId])).rows.length)fail(409,'Для этого статика уже есть заявка: рассмотрите её');const {rows:[u]}=await c.query('INSERT INTO users(email,static_id,password_hash,password_reset_required,user_metadata) VALUES($1,$2,$3,false,$4) RETURNING id,static_id,user_metadata',[staticId+'@accounts.vsrf.invalid',staticId,h,JSON.stringify({display_name:text(b.display_name,3,120)})]);await c.query('SELECT staff_upsert_role($1,$2,$3,$4)',[u.id,role,b.display_name,b.custom_role_id||null]);await audit(c,req.user,'create','user',u.id);return u;});answer(res,{user:u});});
  app.delete('/api/v1/auth/admin/users/:id',async(req,res)=>{admin(req.user);await revokeUser(req.user,req.params.id);answer(res,{});});
  async function tx(user,fn){return transaction(db,async c=>{if(user)await c.query("SELECT set_config('cgb.user_id',$1,true)",[user.id]);return fn(c);});}
  async function revokeUser(actor,id){await tx(actor,async c=>{const {rows:[r]}=await c.query('SELECT * FROM user_roles WHERE user_id=$1 FOR UPDATE',[uuid(id)]);if(!r||r.role==='admin'||id===actor.id)fail(403,'Администратор и собственная учётная запись защищены');await c.query('UPDATE users SET disabled=true WHERE id=$1',[id]);await c.query('DELETE FROM auth_sessions WHERE user_id=$1',[id]);await audit(c,actor,'disable','user',id);});}
@@ -54,7 +65,7 @@ export async function createApp(db,{origin,production=false,key,test=false,stora
   if(spec.table==='custom_roles'&&!read){spec.filters.push({column:'key',op:'neq',value:'admin'});if(spec.action==='upsert'){for(const row of Array.isArray(spec.body)?spec.body:[spec.body])if(row.id&&(await db.query("SELECT 1 FROM custom_roles WHERE id=$1 AND key='admin'",[row.id])).rows.length)fail(403,'Системная роль защищена');}}
   const result=await tx(req.user,async c=>{
    if(spec.table==='test_attempts'&&spec.action==='delete'){const sel=query.compile({...spec,action:'select',select:'id',limit:1000});const rows=(await c.query(sel.text,sel.values)).rows;for(const a of rows){await c.query('UPDATE exam_runs SET invalidated=true WHERE result_id=$1',[a.id]);await c.query('UPDATE test_attempts SET invalidated=true WHERE id=$1',[a.id]);await audit(c,req.user,'reset','test_attempt',a.id);}return {rows:[]};}
-   if(!read&&['report_send_requests','payroll_send_requests','vp_report_requests','test_result_requests','complaints','requests'].includes(spec.table))spec.returning=true;const compiled=query.compile(spec);const r=await c.query(compiled.text,compiled.values);if(!read){await audit(c,req.user,spec.action,spec.table,'',{fields:Object.keys(spec.body||{})});if(spec.table==='supply_requests')await refreshSupply(c,spec);await notifyMutation(c,spec,r.rows);}
+   if(!read&&['report_send_requests','payroll_send_requests','vp_report_requests','test_result_requests','complaints','requests','violations_registry'].includes(spec.table))spec.returning=true;const compiled=query.compile(spec);const r=await c.query(compiled.text,compiled.values);if(!read){await audit(c,req.user,spec.action,spec.table,'',{fields:Object.keys(spec.body||{})});if(spec.table==='supply_requests')await refreshSupply(c,spec);await notifyMutation(c,spec,r.rows);}
    let count=null;if(compiled.countText)count=(await c.query(compiled.countText,compiled.countValues)).rows[0].count;return {rows:r.rows,count};
   });res.json({data:spec.head?null:result.rows,error:null,count:result.count});
  });
@@ -73,14 +84,14 @@ export async function createApp(db,{origin,production=false,key,test=false,stora
  app.post('/api/v1/integrations/:id',async(req,res)=>{admin(req.user);const encrypted=req.body.url?encrypt(webhookURL(req.body.url),key):null;if(typeof req.body.enabled!=='boolean')fail(400,'Неверное состояние');const r=await db.query('UPDATE webhook_routes SET encrypted_url=coalesce($1,encrypted_url),enabled=$2,updated_at=now() WHERE id=$3',[encrypted,req.body.enabled,req.params.id]);if(!r.rowCount)fail(404,'Маршрут не найден');await audit(db,req.user,'configure','webhook',req.params.id);answer(res,{});});
  app.get('/api/v1/audit',async(req,res)=>{admin(req.user);answer(res,(await db.query('SELECT * FROM audit_log ORDER BY id DESC LIMIT 500')).rows);});
  app.get('/api/v1/directory',async(req,res)=>{
-  if(!req.user)fail(401,'Войдите в аккаунт');if(!can(req.user,'vp','view')&&!can(req.user,'payroll','view'))fail(403,'Нет доступа к служебному составу');
+  if(!req.user)fail(401,'Войдите в аккаунт');if(!can(req.user,'vp','view')&&!can(req.user,'payroll','view')&&!can(req.user,'complaints','review')&&!can(req.user,'requests','review')&&!can(req.user,'complaints','review')&&!can(req.user,'requests','review'))fail(403,'Нет доступа к служебному составу');
   const state=(await db.query('SELECT state FROM composition WHERE id=1')).rows[0]?.state||{},roles=[],members=new Map();
   const groups=[{id:'hq',name:'Штаб бригады',short:'Штаб',members:Object.values(state.hq||{})},...(state.subs||[])];
   for(const [index,group]of groups.entries()){
    const role_id='site:'+hash(String(group.id)).slice(0,24);roles.push({role_id,name:String(group.name||group.short||'Подразделение'),position:groups.length-index,color:/^#[0-9a-f]{6}$/i.test(group.color||'')?group.color:'#7a8a4a'});
    for(const person of group.members||[]){if(!person.name?.trim()||!/^\d{3}-\d{3}$/.test(person.code||''))continue;
     const id='static:'+person.code;
-    const m=members.get(id)||{discord_id:id,parsed_fio:person.name,parsed_static:person.code,parsed_dept:group.short||group.name,display_name:person.name,raw_nick:person.name,role_ids:[],role_names:[],active:true};m.role_ids.push(role_id);m.role_names.push(group.name);members.set(id,m);
+    const m=members.get(id)||{discord_id:id,parsed_fio:person.name,parsed_static:person.code,parsed_dept:group.short||group.name,display_name:person.name,raw_nick:person.name,contact_discord:String(person.discord||''),role_ids:[],role_names:[],active:true};m.role_ids.push(role_id);m.role_names.push(group.name);members.set(id,m);
    }
   }answer(res,{roles,members:[...members.values()]});
  });

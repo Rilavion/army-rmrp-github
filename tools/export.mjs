@@ -5,7 +5,7 @@ const root=path.resolve(import.meta.dirname,'..'),target=path.resolve(process.ar
 if(!process.argv[2]||target===root||target.startsWith(root+path.sep))throw Error('Pass a new destination outside the workspace');
 const verifyOnly=process.argv[3]==='--verify-existing';
 if(!verifyOnly)await fs.mkdir(target); // Never overwrite an existing handoff.
-const dirs=['public','server','database','docs','deploy','tools','tests'];
+const dirs=['public','server','database','docs','deploy','tools','tests','frontend'];
 const files=['README.md','package.json','package-lock.json','.gitignore','.gitattributes','.dockerignore','.env.example'];
 if(!verifyOnly){for(const dir of dirs)await fs.cp(path.join(root,dir),path.join(target,dir),{recursive:true,errorOnExist:true,force:false});
 for(const file of files)await fs.copyFile(path.join(root,file),path.join(target,file));}

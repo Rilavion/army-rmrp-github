@@ -1,8 +1,8 @@
 import {queue} from './db.mjs';
 export async function notifyMutation(db,spec,rows){
- const routes={report_send_requests:'reports',payroll_send_requests:'payroll',vp_report_requests:'vp',test_result_requests:'exams',complaints:'complaints',requests:'requests'};
+ const routes={report_send_requests:'reports',payroll_send_requests:'payroll',vp_report_requests:'vp',test_result_requests:'exams',complaints:'complaints',requests:'requests',violations_registry:'vp'};
  const route=routes[spec.table];if(!route||spec.action==='delete')return;
- for(const row of rows){if(!row.id)continue;let data=row,title='Служебная запись ВС РФ';
+ for(const row of rows){if(!row.id)continue;if(spec.table==='violations_registry'&&row.notify_mode==='silent')continue;if(spec.table==='requests'&&(await db.query('SELECT notify_verdict FROM requests_settings WHERE id=1')).rows[0]?.notify_verdict===false)continue;let data=row,title='Служебная запись ВС РФ';
  if(spec.table==='payroll_send_requests'){data=(await db.query('SELECT * FROM payroll_drafts WHERE id=$1',[row.draft_id])).rows[0];title='Приказ о премировании';}
  if(spec.table==='vp_report_requests'){data=(await db.query('SELECT * FROM vp_archive WHERE id=$1',[row.archive_id])).rows[0];title='Отчёт военной полиции';}
  if(spec.table==='test_result_requests'){data=(await db.query('SELECT fio,static_id,percent,passed,created_at FROM test_attempts WHERE id=$1',[row.attempt_id])).rows[0];title='Результат экзамена';}
