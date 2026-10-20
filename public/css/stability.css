@@ -11,3 +11,14 @@ html{scrollbar-gutter:stable;scroll-behavior:auto}
 /* Keep all header controls reachable on narrow screens. */
 @media(max-width:600px){.topbar-inner{padding:0 12px;gap:8px}.brand{flex-shrink:1;gap:8px}.brand-icon{width:36px;height:36px;flex-shrink:0}.brand-text{min-width:0}.brand-name{font-size:11px;overflow-wrap:anywhere}.header-actions{gap:4px}}
 @media(max-width:380px){.brand-text{display:none}}
+/* Ambient symbols stay behind content, above the page paint. */
+body{isolation:isolate}
+.nav a{--nav-icon:url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23cda85a"%3E%3Cpath d="M4 3h16v18H4zm3 4v2h10V7zm0 5v2h10v-2zm0 5v1h7v-1z"/%3E%3C/svg%3E')}
+.nav-footer [data-open-settings]{margin-bottom:12px;width:100%}
+.fs-modes,.vsrf-sp-bg-modes{flex-wrap:wrap}
+@media print{#bgCanvas,.bg-noise{display:none!important}}
+/* Keep ambient symbols out of form text and adapt legacy fields to both themes. */
+.cf-form{background:var(--card-bg)}
+.cf-group{background:var(--input-bg);border-color:var(--line)}
+[data-theme="light"] .msg-input{background:var(--paper);color:var(--text)}
+[data-theme="light"] .msg-input::placeholder{color:var(--muted);opacity:.8}

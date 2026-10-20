@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
+<!DOCTYPE html><html lang="ru"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" href="favicon/favicon.ico" sizes="any">
@@ -8,8 +6,8 @@
 <link rel="apple-touch-icon" href="favicon/favicon.png">
 <title>ВС РФ — Тестирование</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&amp;family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css?v=150">
 <style id="vsrf-admin-guard">
 [data-admin]{display:none !important}
@@ -22,7 +20,7 @@ body.vsrf-is-admin [data-admin]:not(.nav a){display:initial !important}
 body.vsrf-is-staff [data-staff]:not(.nav a){display:initial !important}
 </style>
 <link rel="stylesheet" href="css/stability.css">
-</head>
+<link rel="stylesheet" href="css/exam-details.css"></head>
 <body>
 <canvas id="bgCanvas"></canvas>
 <div class="bg-noise"></div>
@@ -34,48 +32,51 @@ body.vsrf-is-staff [data-staff]:not(.nav a){display:initial !important}
       <div class="brand-text"><span class="brand-label">Вооружённые Силы РФ</span><span class="brand-name">1-я МСБр · в/ч №12132</span></div>
     </a>
     <nav class="nav" id="mainNav">
-      <a href="index.html" data-page="index.html" data-transition>Главная</a>
-      <a href="info.html" data-page="info.html" data-transition>Информация</a>
-      <a href="ustav.html" data-page="ustav.html" data-transition>Уставы</a>
-      
-      <a href="tests.html" data-page="tests.html" data-transition data-loggedin class="active">Тестирование</a>
-      <a href="composition.html" data-page="composition.html" data-transition>Состав</a>
-      <a href="docs.html" data-page="docs.html" data-transition data-perm="docs:view">Документы</a>
-      <a href="news.html" data-page="news.html" data-transition>Новости</a>
-      <a href="autopark.html" data-page="autopark.html" data-transition>Автопарк</a>
-      <a href="map.html" data-page="map.html" data-transition>Карта</a>
-      <a href="faq.html" data-page="faq.html" data-transition>FAQ</a>
-      <a href="complaints.html" data-page="complaints.html" data-transition>Жалобы</a>
-      <a href="supply.html" data-page="supply.html" data-transition data-perm="supply:view">Поставки</a>
-      <a href="apps.html" data-page="apps.html" data-transition data-perm="apps:view">Заявления</a>
-      <a href="vp.html" data-page="vp.html" data-transition data-perm="vp:view">Проверки ВП</a>
-      <a href="complaints-review.html" data-page="complaints-review.html" data-transition data-perm="complaints:review,complaints:view">Рассмотрение жалоб</a>
-      <a href="complaints-stats.html" data-page="complaints-stats.html" data-transition data-perm="complaints:review,complaints:view">Статистика жалоб</a>
-      <a href="leave.html" data-page="leave.html" data-transition data-loggedin>Увольнительная</a>
-      <a href="vacation-ic.html" data-page="vacation-ic.html" data-transition data-loggedin>Отпуск IC</a>
-      <a href="vacation-ooc.html" data-page="vacation-ooc.html" data-transition data-loggedin>Отпуск OOC</a>
-      <a href="dismissal.html" data-page="dismissal.html" data-transition data-loggedin>Увольнение</a>
-      <a href="promotion.html" data-page="promotion.html" data-transition data-loggedin>Повышение</a>
-      <a href="restoration.html" data-page="restoration.html" data-transition>Восстановление в ВС РФ</a>
-      <a href="requests-review.html" data-page="requests-review.html" data-transition data-perm="requests:review,requests:view">Рассмотрение заявок</a>
-      <a href="requests-stats.html" data-page="requests-stats.html" data-transition data-perm="requests:review,requests:view">Статистика заявок</a>
-      <a href="payroll.html" data-page="payroll.html" data-transition data-perm="payroll:view">Реестр премирования</a>
-      <a href="raids.html" data-page="raids.html" data-transition data-perm="raids:view">Статистика налётов</a>
-      <a href="report.html" data-page="report.html" data-transition>Еженедельный отчёт</a>
-      <a href="report-settings.html" data-page="report-settings.html" data-transition data-perm="report:settings">Настройки отчётов</a>
-      <a href="vp-request.html" data-page="vp-request.html" data-transition data-perm="vp_request:submit">Запрос на наказание</a>
-      <a href="vp-request-settings.html" data-page="vp-request-settings.html" data-transition data-perm="vp_request:settings">Настройки запросов ВП</a>
-      <a href="lk.html" data-page="lk.html" data-transition>Личный кабинет</a>
-    
-
-<a href="supply-report.html" data-page="supply-report.html" data-transition data-perm="supply:view">Учёт поставок</a>
-<a href="integrations.html" data-page="integrations.html" data-transition data-perm="lk:roles">Уведомления Discord</a></nav>
+<a href="accounts-review.html" data-page="accounts-review.html" data-perm="registration:review" data-loggedin="">Регистрация сотрудников</a>
+<a href="index.html" data-page="index.html">Главная</a>
+<a href="info.html" data-page="info.html">Информация</a>
+<a href="ustav.html" data-page="ustav.html">Уставы</a>
+<a href="composition.html" data-page="composition.html">Состав</a>
+<a href="news.html" data-page="news.html">Новости</a>
+<a href="autopark.html" data-page="autopark.html">Автопарк</a>
+<a href="map.html" data-page="map.html">Карта</a>
+<a href="faq.html" data-page="faq.html">FAQ</a>
+<a href="complaints.html" data-page="complaints.html">Жалобы</a>
+<a href="tests.html" data-page="tests.html" data-loggedin="">Тестирование</a>
+<a href="leave.html" data-page="leave.html" data-loggedin="">Увольнительная</a>
+<a href="vacation-ic.html" data-page="vacation-ic.html" data-loggedin="">Отпуск IC</a>
+<a href="vacation-ooc.html" data-page="vacation-ooc.html" data-loggedin="">Отпуск OOC</a>
+<a href="dismissal.html" data-page="dismissal.html" data-loggedin="">Увольнение</a>
+<a href="promotion.html" data-page="promotion.html" data-loggedin="">Повышение</a>
+<a href="restoration.html" data-page="restoration.html" data-loggedin="">Восстановление в ВС РФ</a>
+<a href="report.html" data-page="report.html" data-loggedin="">Еженедельный отчёт</a>
+<a href="vp-request.html" data-page="vp-request.html" data-perm="vp_request:submit" data-loggedin="">Запрос на наказание</a>
+<a href="docs.html" data-page="docs.html" data-perm="docs:view" data-loggedin="">Документы</a>
+<a href="supply.html" data-page="supply.html" data-perm="supply:view" data-loggedin="">Запрос поставки</a>
+<a href="supply-report.html" data-page="supply-report.html" data-perm="supply:view" data-loggedin="">Учёт поставок</a>
+<a href="supply-stats.html" data-page="supply-stats.html" data-perm="supply:stats" data-loggedin="">Статистика поставок</a>
+<a href="supply-admin.html" data-page="supply-admin.html" data-perm="supply:admin" data-loggedin="">Настройки поставок</a>
+<a href="requests-review.html" data-page="requests-review.html" data-perm="requests:review,requests:view" data-loggedin="">Заявки</a>
+<a href="requests-stats.html" data-page="requests-stats.html" data-perm="requests:review,requests:view" data-loggedin="">Статистика заявок</a>
+<a href="requests-settings.html" data-page="requests-settings.html" data-perm="requests:settings" data-loggedin="">Настройки заявок</a>
+<a href="vp.html" data-page="vp.html" data-perm="vp:view" data-loggedin="">Проверки ВП</a>
+<a href="complaints-review.html" data-page="complaints-review.html" data-perm="complaints:review,complaints:view" data-loggedin="">Рассмотрение жалоб</a>
+<a href="complaints-stats.html" data-page="complaints-stats.html" data-perm="complaints:review,complaints:view" data-loggedin="">Статистика жалоб</a>
+<a href="complaints-form.html" data-page="complaints-form.html" data-perm="complaints:form_edit,complaints:settings" data-loggedin="">Редактор жалобы</a>
+<a href="complaints-settings.html" data-page="complaints-settings.html" data-perm="complaints:settings" data-loggedin="">Настройки жалоб</a>
+<a href="payroll.html" data-page="payroll.html" data-perm="payroll:view" data-loggedin="">Реестр премирования</a>
+<a href="report-settings.html" data-page="report-settings.html" data-perm="report:settings" data-loggedin="">Настройки отчётов</a>
+<a href="vp-request-settings.html" data-page="vp-request-settings.html" data-perm="vp_request:settings" data-loggedin="">Настройки запросов ВП</a>
+<a href="roles.html" data-page="roles.html" data-perm="lk:roles" data-loggedin="">Роли и права</a>
+<a href="integrations.html" data-page="integrations.html" data-perm="lk:roles" data-loggedin="">Уведомления Discord</a>
+<a href="lk.html" data-page="lk.html" data-loggedin="">Личный кабинет</a>
+</nav>
     <div class="header-actions">
       <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Сменить тему">
-        <svg class="moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-        <svg class="sun" viewBox="0 0 24 24"><path d="M12 4V2m0 20v-2m8-8h2M2 12h2m13.66-5.66l1.42-1.42M4.92 19.08l1.42-1.42m0-11.32L4.92 4.92m14.16 14.16l-1.42-1.42M12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        <svg class="moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+        <svg class="sun" viewBox="0 0 24 24"><path d="M12 4V2m0 20v-2m8-8h2M2 12h2m13.66-5.66l1.42-1.42M4.92 19.08l1.42-1.42m0-11.32L4.92 4.92m14.16 14.16l-1.42-1.42M12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg>
       </button>
-      <button class="login-btn" data-open-login><svg viewBox="0 0 24 24"><path d="M12 12a5 5 0 1 0-5-5 5 5 0 0 0 5 5zm0 2c-3.33 0-10 1.67-10 5v3h20v-3c0-3.33-6.67-5-10-5z"/></svg><span>Войти</span></button>
+      <button class="login-btn" data-open-login=""><svg viewBox="0 0 24 24"><path d="M12 12a5 5 0 1 0-5-5 5 5 0 0 0 5 5zm0 2c-3.33 0-10 1.67-10 5v3h20v-3c0-3.33-6.67-5-10-5z"></path></svg><span>Войти</span></button>
       <button class="burger" id="burger" aria-label="Меню"><span></span><span></span><span></span></button>
     </div>
   </div>
@@ -103,8 +104,8 @@ body.vsrf-is-staff [data-staff]:not(.nav a){display:initial !important}
           <select class="vp-search" id="tCatFilter" style="max-width:220px"><option value="">Все категории</option></select>
         </div>
         <div class="learn-toolbar-r">
-          
-          <button class="btn btn-ghost btn-sm" id="tAttemptsBtn" data-staff>📊 Результаты</button>
+          <a href="learn.html" data-page="learn.html" class="btn btn-ghost btn-sm">← К материалам</a>
+          <button class="btn btn-ghost btn-sm" id="tAttemptsBtn" data-staff="">📊 Результаты</button>
           <button class="btn btn-gold btn-sm" id="tAdminBtn" data-perm="tests:edit,tests:create">⚙ Управление</button>
         </div>
       </div>
@@ -157,31 +158,20 @@ body.vsrf-is-staff [data-staff]:not(.nav a){display:initial !important}
 <div class="modal-back" id="tAttemptDetailModal">
   <div class="modal modal-xxl">
     <button class="modal-close" aria-label="Закрыть">✕</button>
-    <h3 id="adTitle">Прохождение</h3>
-    <div class="modal-sub" id="adSub"></div>
-    <div class="ad-body" id="adBody"></div>
-    <div class="form-msg" id="adMsg"></div>
+    <h3 id="attemptDetailTitle">Прохождение</h3>
+    <div class="modal-sub" id="attemptDetailSub"></div>
+    <div class="attempt-detail-body" id="attemptDetailBody"><div class="form-msg info" style="display:block">Загрузка карточки прохождения...</div></div>
+    <div class="form-msg" id="attemptDetailMsg"></div>
     <div style="display:flex;gap:10px;justify-content:flex-end;padding-top:12px;border-top:1px solid var(--gold-b);margin-top:14px;flex-wrap:wrap">
-      <button class="btn btn-ghost btn-sm" id="adResetBtn" data-perm="tests:reset_attempts">↺ Сбросить попытки этого юзера</button>
+      <button class="btn btn-ghost btn-sm" id="attemptDetailResetBtn" data-perm="tests:reset_attempts">↺ Сбросить попытки этого юзера</button>
       <div style="flex:1"></div>
-      <button class="btn btn-ghost btn-sm" id="adRepingBtn">📤 Пинг повторно</button>
-      <button class="btn btn-gold btn-sm" id="adSaveBtn">Сохранить изменения</button>
+      <button class="btn btn-ghost btn-sm" id="attemptDetailRepingBtn">Отправить через вебхук</button>
+      
     </div>
   </div>
 </div>
 
-<div class="modal-back" id="loginModal">
-  <div class="modal">
-    <button class="modal-close" aria-label="Закрыть">✕</button>
-    <h3>Вход</h3>
-    <form>
-      <div class="form-group"><label>Email</label><input type="email" name="email" required></div>
-      <div class="form-group"><label>Пароль</label><input type="password" name="password" required></div>
-      <button class="btn btn-gold" style="width:100%" type="submit">Войти</button>
-      <div class="form-msg"></div>
-    </form>
-  </div>
-</div>
+
 
 <footer class="footer">
   <div class="container">
@@ -189,13 +179,14 @@ body.vsrf-is-staff [data-staff]:not(.nav a){display:initial !important}
   </div>
 </footer>
 
-<div class="fab-stack"><button class="fab" id="fabUp" title="Наверх"><svg viewBox="0 0 24 24"><path d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8z"/></svg></button></div>
+<div class="fab-stack"><button class="fab" id="fabUp" title="Наверх"><svg viewBox="0 0 24 24"><path d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8z"></path></svg></button></div>
 
 <script src="js/core/api-client.js?v=145"></script>
 <script src="js/core/config.js?v=145"></script>
-<script src="js/core/auth.js?v=145"></script>
+<script src="js/core/auth.js?v=145"></script><script src="js/core/directory.js"></script>
 <script src="js/core/roles-engine.js?v=145"></script>
 <script src="js/features/tests-engine.js?v=145"></script>
+<script src="js/ui/navigation.js"></script>
 <script src="js/ui/main.js?v=150"></script>
 <script src="js/utils/format-utils.js?v=145"></script>
 <script src="js/ui/holiday-engine.js?v=145"></script>
@@ -247,7 +238,7 @@ function renderList(){
   for(const [cid,items] of byCat){
     const cat=catById(cid);
     const name=cat?cat.name:"Без категории";
-    const color=cat?cat.color:"#cda85a";
+    const color=cat?cat.color:"#22d3ee";
     parts.push(`<div class="tests-cat">
       <div class="tests-cat-title"><span class="tests-cat-dot" style="background:${esc(color)}"></span>${esc(name)}<span class="tests-cat-count">${items.length}</span></div>
       <div class="tests-cards">
@@ -267,8 +258,8 @@ function renderList(){
               ${t.time_limit_minutes?`<span title="Лимит">⏱ ${t.time_limit_minutes}м</span>`:""}
             </div>
             <div class="test-card-acts">
-              <a class="btn btn-gold" href="${esc(url)}">Начать тест →</a>
-              <a class="btn btn-ghost btn-sm" data-perm-edit-test="1" href="test-editor.html?t=${t.id}" style="display:none">✎</a>
+              <a class="btn btn-gold" href="${esc(window.VSRF_SECURITY.url(url))}">Начать тест →</a>
+              <a class="btn btn-ghost btn-sm" data-perm-edit-test="1" href="test-editor?t=${encodeURIComponent(t.id)}" style="display:none">✎</a>
             </div>
           </div>`;
         }).join("")}
@@ -309,22 +300,22 @@ function renderAdminTests(){
     <div class="tests-admin-meta">${esc((catById(t.category_id)||{}).name||"—")} · ${t.pass_score}% · попыток: ${t.max_attempts||"∞"}</div>
     <div class="tests-admin-acts">
       <a class="btn btn-ghost btn-sm" href="${esc(testUrl(t))}" target="_blank">Открыть</a>
-      <a class="btn btn-gold btn-sm" href="test-editor.html?t=${t.id}">✎ Настройки</a>
+      <a class="btn btn-gold btn-sm" href="test-editor?t=${encodeURIComponent(t.id)}">✎ Настройки</a>
     </div>
   </div>`).join("");
 }
-$("tCreateBtn").addEventListener("click",()=>{location.href="test-editor.html"});
+$("tCreateBtn").addEventListener("click",()=>{location.href="test-editor"});
 
 async function renderAdminCats(){
   const box=$("tCatsList");
   if(!CATS.length){box.innerHTML=`<div class="apps-empty"><p>Категорий нет</p></div>`;return}
   box.innerHTML=CATS.map(c=>`<div class="tests-cat-row">
     <span class="tests-cat-dot" style="background:${esc(c.color)}"></span>
-    <input type="text" data-cat-name="${c.id}" value="${esc(c.name)}" class="vp-search" style="flex:1">
-    <input type="color" data-cat-color="${c.id}" value="${esc(c.color||'#cda85a')}" style="width:44px;height:36px;border-radius:6px;border:1px solid var(--gold-b);cursor:pointer">
-    <input type="number" data-cat-sort="${c.id}" value="${c.sort||100}" style="width:70px" class="vp-search">
-    <button class="btn btn-ghost btn-sm" data-cat-save="${c.id}">💾</button>
-    <button class="btn btn-ghost btn-sm" data-cat-del="${c.id}">🗑</button>
+    <input type="text" data-cat-name="${esc(c.id)}" value="${esc(c.name)}" class="vp-search" style="flex:1">
+    <input type="color" data-cat-color="${esc(c.id)}" value="${esc(c.color||'#22d3ee')}" style="width:44px;height:36px;border-radius:6px;border:1px solid var(--gold-b);cursor:pointer">
+    <input type="number" data-cat-sort="${esc(c.id)}" value="${c.sort||100}" style="width:70px" class="vp-search">
+    <button class="btn btn-ghost btn-sm" data-cat-save="${esc(c.id)}">💾</button>
+    <button class="btn btn-ghost btn-sm" data-cat-del="${esc(c.id)}">🗑</button>
   </div>`).join("");
   box.querySelectorAll("[data-cat-save]").forEach(b=>b.addEventListener("click",async()=>{
     const id=b.dataset.catSave;
@@ -364,9 +355,17 @@ $("aSearch").addEventListener("input",()=>renderAttemptsList());
 $("aStatusFilter").addEventListener("change",()=>renderAttemptsList());
 
 async function loadAttempts(){
-  ALL_ATTEMPTS=await VSRF_TESTS.fetchAttempts($("aTestFilter").value||null,300);
-  renderAttemptsList();
+  const box=$("aList");
+  box.innerHTML=`<div class="apps-empty"><p>Загрузка результатов...</p></div>`;
+  try{
+    ALL_ATTEMPTS=await VSRF_TESTS.fetchAttempts($("aTestFilter").value||null,300);
+    renderAttemptsList();
+  }catch(e){
+    ALL_ATTEMPTS=[];
+    box.innerHTML=`<div class="apps-empty"><p>Не удалось загрузить результаты: ${esc(e&&e.message?e.message:"неизвестная ошибка")}</p></div>`;
+  }
 }
+function attemptTotal(a){return Number(a&&(a.total!=null?a.total:a.max_score))||0}
 function renderAttemptsList(){
   const q=$("aSearch").value.toLowerCase();
   const st=$("aStatusFilter").value;
@@ -377,7 +376,11 @@ function renderAttemptsList(){
     return (a.fio||"").toLowerCase().includes(q)||(a.static_id||"").toLowerCase().includes(q)||(a.discord||"").toLowerCase().includes(q);
   });
   const box=$("aList");
-  if(!list.length){box.innerHTML=`<div class="apps-empty"><p>Прохождений не найдено.</p></div>`;return}
+  if(!list.length){
+    const selected=$("aTestFilter").value;
+    box.innerHTML=`<div class="apps-empty"><p>${selected?"Для выбранного теста прохождений пока нет.":"Прохождений не найдено."}</p></div>`;
+    return;
+  }
   box.innerHTML=list.map(a=>{
     const test=TESTS.find(t=>t.id===a.test_id);
     return `<div class="a-row ${a.passed?"a-row-ok":"a-row-fail"}" data-a-open="${a.id}">
@@ -386,76 +389,92 @@ function renderAttemptsList(){
         <div class="a-row-fio">${esc(a.fio)} <span class="vp-nick">${esc(a.static_id)}</span></div>
         <div class="a-row-test">${esc(test?test.title:a.test_id)}</div>
       </div>
-      <div class="a-row-score"><b>${a.score}/${a.max_score}</b> · ${a.percent}%</div>
+      <div class="a-row-score"><b>${a.score}/${attemptTotal(a)}</b> · ${a.percent}%</div>
       <div class="a-row-date">${new Date(a.finished_at||a.started_at).toLocaleString("ru-RU",{timeZone:"Europe/Moscow"})}</div>
       ${a.reviewed_by_name?`<div class="a-row-rev">✎ ${esc(a.reviewed_by_name)}</div>`:""}
     </div>`;
   }).join("");
-  box.querySelectorAll("[data-a-open]").forEach(el=>el.addEventListener("click",()=>openAttempt(el.dataset.aOpen)));
+  box.querySelectorAll("[data-a-open]").forEach(el=>el.addEventListener("click",()=>openAttemptCardV21(el.dataset.aOpen)));
 }
 
 let CURRENT_ATTEMPT=null;
-async function openAttempt(id){
-  CURRENT_ATTEMPT=ALL_ATTEMPTS.find(a=>a.id===id);
-  if(!CURRENT_ATTEMPT) return;
-  const test=TESTS.find(t=>t.id===CURRENT_ATTEMPT.test_id);
-  const qs=test?await VSRF_TESTS.fetchQuestions(test.id):[];
-  $("adTitle").textContent="Прохождение · "+(test?test.title:"?");
-  $("adSub").innerHTML=`<b>${esc(CURRENT_ATTEMPT.fio)}</b> · <code>${esc(CURRENT_ATTEMPT.static_id)}</code> · ${esc(CURRENT_ATTEMPT.discord||"—")} · ${new Date(CURRENT_ATTEMPT.finished_at).toLocaleString("ru-RU",{timeZone:"Europe/Moscow"})}`;
-  const ans=CURRENT_ATTEMPT.answers||{};
-  const body=[];
-  body.push(`<div class="msg-row" style="margin-bottom:12px">
-    <div class="form-group msg-flex-1"><label>Балл</label><input type="number" id="adScore" class="msg-input" value="${CURRENT_ATTEMPT.score}"></div>
-    <div class="form-group msg-flex-1"><label>Макс. балл</label><input type="number" id="adMax" class="msg-input" value="${CURRENT_ATTEMPT.max_score}"></div>
-    <div class="form-group msg-flex-1"><label>Пройден</label><select id="adPassed" class="msg-input"><option value="true" ${CURRENT_ATTEMPT.passed?"selected":""}>✅ Да</option><option value="false" ${!CURRENT_ATTEMPT.passed?"selected":""}>⛔ Нет</option></select></div>
-  </div>`);
-  body.push(`<div class="ad-qs">`);
-  for(const q of qs){
-    const u=ans[q.id];
-    const cor=q.correct||[];
-    const uArr=Array.isArray(u)?u:(u==null?[]:[u]);
-    const ok=q.kind==="single"?(cor.length===1&&cor[0]===u):(cor.length===uArr.length&&cor.every(x=>uArr.includes(x)));
-    body.push(`<div class="ad-q ${ok?"ad-q-ok":"ad-q-bad"}">
-      <div class="ad-q-text"><b>${esc(q.text)}</b> <span class="tq-pts">${q.points||1} б.</span></div>
-      <div class="ad-q-opts">${(q.options||[]).map(o=>{
-        const isU=uArr.includes(o);const isC=cor.includes(o);
-        return `<div class="ad-q-opt ${isU?"is-user":""} ${isC?"is-correct":""}">${isC?"✓":isU?"✗":"·"} ${esc(o)}</div>`;
-      }).join("")}</div>
-    </div>`);
-  }
-  body.push(`</div>`);
-  if(CURRENT_ATTEMPT.review_history&&CURRENT_ATTEMPT.review_history.length){
-    body.push(`<div class="ad-history"><b>История правок:</b>`);
-    for(const h of CURRENT_ATTEMPT.review_history){
-      body.push(`<div class="ad-hist-item">${new Date(h.at).toLocaleString("ru-RU",{timeZone:"Europe/Moscow"})} · <b>${esc(h.by)}</b> · ${esc(JSON.stringify(h.patch))}</div>`);
+async function openAttemptCardV21(id){
+  const bodyNode=document.getElementById("attemptDetailBody");
+  if(bodyNode) bodyNode.innerHTML=`<div class="form-msg info" style="display:block">Загрузка карточки прохождения...</div>`;
+  try{
+    CURRENT_ATTEMPT=ALL_ATTEMPTS.find(a=>String(a.id)===String(id));
+    if(!CURRENT_ATTEMPT) throw new Error("Запись прохождения не найдена в загруженном списке");
+    const test=TESTS.find(t=>t.id===CURRENT_ATTEMPT.test_id);
+    const score=Number(CURRENT_ATTEMPT.score)||0;
+    const total=Number(CURRENT_ATTEMPT.total!=null?CURRENT_ATTEMPT.total:CURRENT_ATTEMPT.max_score)||0;
+    $("attemptDetailTitle").textContent="Прохождение · "+(test?test.title:"?");
+    $("attemptDetailSub").innerHTML=`<b>${esc(CURRENT_ATTEMPT.fio)}</b> · <code>${esc(CURRENT_ATTEMPT.static_id)}</code> · ${esc(CURRENT_ATTEMPT.discord||"—")} · ${new Date(CURRENT_ATTEMPT.finished_at||CURRENT_ATTEMPT.started_at||Date.now()).toLocaleString("ru-RU",{timeZone:"Europe/Moscow"})}`;
+    if(!bodyNode) throw new Error("Блок содержимого карточки не найден");
+    bodyNode.innerHTML=`<div class="msg-row" style="margin-bottom:12px">
+      <div class="form-group msg-flex-1"><label>Балл</label><input type="number" id="attemptDetailScore" disabled class="msg-input" value="${score}"></div>
+      <div class="form-group msg-flex-1"><label>Макс. балл</label><input type="number" id="attemptDetailMax" disabled class="msg-input" value="${total}"></div>
+      <div class="form-group msg-flex-1"><label>Пройден</label><select id="attemptDetailPassed" disabled class="msg-input"><option value="true" ${CURRENT_ATTEMPT.passed?"selected":""}>✅ Да</option><option value="false" ${!CURRENT_ATTEMPT.passed?"selected":""}>⛔ Нет</option></select></div>
+    </div><div class="attempt-detail-questions" id="attemptDetailQuestions"><div class="apps-empty"><p>Загрузка ответов...</p></div></div><div id="attemptDetailHistory"></div>`;
+    $("attemptDetailMsg").textContent="";$("attemptDetailMsg").className="form-msg";
+    $("tAttemptDetailModal").classList.add("active");
+    try{
+    const qs=test?await VSRF_TESTS.fetchQuestions(test.id):[];
+    const ans=(CURRENT_ATTEMPT.answers&&typeof CURRENT_ATTEMPT.answers==="object")?CURRENT_ATTEMPT.answers:{};
+    const body=[];
+    for(const q of (Array.isArray(qs)?qs:[])){
+      if(q.kind==="prefilled") continue;
+      try{
+        const u=ans[q.id];
+        const cor=Array.isArray(q.correct)?q.correct:[];
+        const opts=Array.isArray(q.options)?q.options:[];
+        const uArr=Array.isArray(u)?u:(u==null?[]:[u]);
+        if(q.kind==="order"){
+          const ok=uArr.length===cor.length&&uArr.every((v,i)=>v===cor[i]);
+          body.push(`<div class="attempt-detail-question ${ok?"attempt-detail-ok":"attempt-detail-bad"}">
+            <div class="attempt-detail-text"><b>${esc(q.text)}</b> <span class="tq-pts">${q.points||1} б.</span> <span class="msg-help">(расставить по порядку)</span></div>
+            <div class="attempt-detail-order">
+              <div><div class="msg-help" style="margin-bottom:4px">Правильный порядок:</div>${cor.map((o,i)=>`<div class="attempt-detail-option is-correct">${i+1}. ${esc(o)}</div>`).join("")}</div>
+              <div><div class="msg-help" style="margin-bottom:4px">Ответ пользователя:</div>${uArr.length?uArr.map((o,i)=>`<div class="attempt-detail-option ${cor[i]===o?"is-correct":"is-user"}">${cor[i]===o?"✓":"✗"} ${i+1}. ${esc(o)}</div>`).join(""):'<div class="attempt-detail-option">—</div>'}</div>
+            </div>
+          </div>`);
+          continue;
+        }
+        const ok=q.kind==="single"?(cor.length===1&&cor[0]===u):(cor.length===uArr.length&&cor.every(x=>uArr.includes(x)));
+        body.push(`<div class="attempt-detail-question ${ok?"attempt-detail-ok":"attempt-detail-bad"}">
+          <div class="attempt-detail-text"><b>${esc(q.text)}</b> <span class="tq-pts">${q.points||1} б.</span></div>
+          <div class="attempt-detail-options">${opts.map(o=>{
+            const isU=uArr.includes(o);const isC=cor.includes(o);
+            return `<div class="attempt-detail-option ${isU?"is-user":""} ${isC?"is-correct":""}">${isC?"✓":isU?"✗":"·"} ${esc(o)}</div>`;
+          }).join("")}</div>
+        </div>`);
+      }catch(e){
+        body.push(`<div class="attempt-detail-question attempt-detail-bad"><div class="attempt-detail-text"><b>${esc(q&&q.text||"Вопрос")}</b></div><div class="form-msg error" style="display:block">Не удалось показать этот вопрос: ${esc(e&&e.message||"ошибка данных")}</div></div>`);
+      }
     }
-    body.push(`</div>`);
+    $("attemptDetailQuestions").innerHTML=body.length?body.join(""):`<div class="apps-empty"><p>Вопросы этого прохождения не найдены.</p></div>`;
+    const history=Array.isArray(CURRENT_ATTEMPT.review_history)?CURRENT_ATTEMPT.review_history:[];
+    if(history.length){
+      $("attemptDetailHistory").innerHTML=`<div class="attempt-detail-history"><b>История правок:</b>${history.map(h=>`<div class="attempt-detail-history-item">${new Date(h.at).toLocaleString("ru-RU",{timeZone:"Europe/Moscow"})} · <b>${esc(h.by)}</b> · ${esc(JSON.stringify(h.patch))}</div>`).join("")}</div>`;
+    }
+    }catch(e){
+      $("attemptDetailQuestions").innerHTML=`<div class="form-msg error" style="display:block">Не удалось загрузить ответы: ${esc(e&&e.message||"неизвестная ошибка")}</div>`;
+    }
+  }catch(e){
+    if(bodyNode) bodyNode.innerHTML=`<div class="form-msg error" style="display:block">Не удалось открыть карточку: ${esc(e&&e.message||"неизвестная ошибка")}</div>`;
+    const modal=document.getElementById("tAttemptDetailModal");
+    if(modal) modal.classList.add("active");
+    console.error("[tests/open-attempt]",e);
   }
-  $("adBody").innerHTML=body.join("");
-  $("adMsg").textContent="";$("adMsg").className="form-msg";
-  $("tAttemptDetailModal").classList.add("active");
 }
 $("tAttemptDetailModal").querySelector(".modal-close").addEventListener("click",()=>$("tAttemptDetailModal").classList.remove("active"));
 $("tAttemptDetailModal").addEventListener("click",e=>{if(e.target===$("tAttemptDetailModal"))$("tAttemptDetailModal").classList.remove("active")});
 
-$("adSaveBtn").addEventListener("click",async()=>{
-  if(!CURRENT_ATTEMPT) return;
-  const score=parseInt($("adScore").value);
-  const max=parseInt($("adMax").value);
-  const passed=$("adPassed").value==="true";
-  const percent=max?Math.round(score*100/max):0;
-  const r=await VSRF_TESTS.updateAttempt(CURRENT_ATTEMPT.id,{score,max_score:max,passed,percent});
-  const msg=$("adMsg");
-  if(!r.ok){msg.className="form-msg error";msg.textContent=r.error;return}
-  msg.className="form-msg ok";msg.textContent="✓ Сохранено";
-  await loadAttempts();
-});
-
-$("adRepingBtn").addEventListener("click",async()=>{
+$("attemptDetailRepingBtn").addEventListener("click",async()=>{
   if(!CURRENT_ATTEMPT) return;
   if(!confirm("Отправить обновлённый результат в Discord повторно?")) return;
-  const msg=$("adMsg");
+  const msg=$("attemptDetailMsg");
   msg.className="form-msg info";msg.textContent="Отправка...";
+  const test=TESTS.find(t=>t.id===CURRENT_ATTEMPT.test_id);
   const r=await VSRF_TESTS.requestResult(CURRENT_ATTEMPT.id,null,CURRENT_ATTEMPT.discord,true);
   if(!r.ok){msg.className="form-msg error";msg.textContent=r.error;return}
   const res=await VSRF_TESTS.pollResult(r.id,30000);
@@ -463,11 +482,11 @@ $("adRepingBtn").addEventListener("click",async()=>{
   msg.className="form-msg ok";msg.textContent="✓ Отправлено повторно";
 });
 
-$("adResetBtn").addEventListener("click",async()=>{
+$("attemptDetailResetBtn").addEventListener("click",async()=>{
   if(!CURRENT_ATTEMPT) return;
   if(!confirm("Сбросить все попытки этого пользователя (статик "+CURRENT_ATTEMPT.static_id+")?")) return;
   const r=await VSRF_TESTS.resetAttempts(CURRENT_ATTEMPT.test_id,CURRENT_ATTEMPT.static_id,CURRENT_ATTEMPT.discord);
-  const msg=$("adMsg");
+  const msg=$("attemptDetailMsg");
   if(!r.ok){msg.className="form-msg error";msg.textContent=r.error;return}
   msg.className="form-msg ok";msg.textContent="✓ Попытки сброшены";
   await loadAttempts();
@@ -479,5 +498,6 @@ if(window.VSRF_AUTH) VSRF_AUTH.onChange(updateLoggedFlag);
 setTimeout(()=>{loadAll();applyRoles()},600);
 </script>
 
-</body>
-</html>
+
+
+</body></html>
