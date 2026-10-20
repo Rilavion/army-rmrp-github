@@ -21,14 +21,6 @@ window.VSRF_NOTIFY_LIVE=(function(){
   function saveSeen(s){try{localStorage.setItem(SEEN_KEY,JSON.stringify(s))}catch(e){}}
 
   const EVENTS={
-    "apps.new":{
-      label:"📋 Новые заявления",
-      table:"applications",fields:"id,submitter_name,submitter_discord,app_type,status,created_at",
-      filter:q=>q.eq("status","new"),
-      title:r=>"📋 Новое заявление · "+(r.app_type||""),
-      body:r=>`${r.submitter_name||"—"}${r.submitter_discord?" · "+r.submitter_discord:""}`,
-      url:()=>"apps.html",perm:{sec:"apps",act:"view"}
-    },
     "complaints.new":{
       label:"⚠ Новые жалобы",
       table:"complaints",fields:"id,code,target_fio,target_static,created_at",

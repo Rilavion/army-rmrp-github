@@ -21,7 +21,7 @@ window.VSRF_DSAC=(function(){
       try{
         const c=await waitForClient(10000);
         if(!c){ console.warn("[dsac] no client after 10s"); return []; }
-        const {data,error}=await c.from("ds_members").select("parsed_fio,parsed_static,parsed_dept,discord_id,raw_nick,display_name").eq("active",true).limit(2000);
+        const {data,error}=await VSRF_DIRECTORY.load();
         if(error){ console.warn("[dsac] load:",error.message); return []; }
         const seen=new Set();
         const list=(data||[]).filter(m=>{
@@ -32,7 +32,7 @@ window.VSRF_DSAC=(function(){
         }).map(m=>({
           fio:(m.parsed_fio||m.display_name||m.raw_nick||"").trim(),
           static:m.parsed_static||"",
-          did:m.discord_id||"",
+          did:m.contact_discord||"",
           position:m.parsed_dept||""
         }));
         if(list.length) DS_LIST=list;

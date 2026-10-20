@@ -1,4 +1,6 @@
 window.VSRF_PAYROLL=(function(){
+ async function loadRoles(){const r=await VSRF_API.call('/directory',undefined,'GET');if(r.error)throw Error(r.error.message);return r.data.roles;}
+
   function client(){return window.VSRF_AUTH&&window.VSRF_AUTH.state&&window.VSRF_AUTH.state.client}
 
   async function fetchSettings(){
@@ -42,8 +44,6 @@ window.VSRF_PAYROLL=(function(){
     const {data}=await c.from("payroll_drafts").select("*").eq("status","sent").order("sent_at",{ascending:false}).limit(limit||30);
     return data||[];
   }
-
-  async function loadRoles(){const r=await VSRF_API.call('/directory',undefined,'GET');if(r.error)throw Error(r.error.message);return r.data.roles;}
 
   async function fetchMembersByRoleId(roleId){
     const c=client();if(!c) return [];
@@ -121,6 +121,5 @@ window.VSRF_PAYROLL=(function(){
     return {fund,total_pct:totalPct,total_spent:totalSpent,departments:depts,overspend:totalSpent>fund+0.5};
   }
 
-  return {fetchSettings,saveSettings,ensureDraft,loadDraft,saveDraft,listArchive,
-          loadRoles,fetchMembersByRoleId,markSent,fmtMoney,calc};
+  return {loadRoles,fetchSettings,saveSettings,ensureDraft,loadDraft,saveDraft,listArchive,fetchMembersByRoleId,markSent,fmtMoney,calc};
 })();

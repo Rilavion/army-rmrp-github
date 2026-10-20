@@ -81,32 +81,6 @@ window.VSRF_VP=(function(){
     return {ok:true,count:discordIds.length};
   }
 
-  async function requestSync(){
-    const c=await client();if(!c) return {ok:false,error:"no client"};
-    const s=window.VSRF_AUTH&&window.VSRF_AUTH.state;
-    const name=(function(){try{return localStorage.getItem("vsrf-my-display-name")||(s&&s.user&&s.user.email)||"admin"}catch(e){return "admin"}})();
-    const {data,error}=await c.from("ds_sync_requests").insert({requested_by:s&&s.user?s.user.id:null,requested_by_name:name}).select().single();
-    if(error) return {ok:false,error:error.message};
-    return {ok:true,id:data.id};
-  }
-
-  async function pollSyncStatus(id,timeoutMs){
-    const c=await client();if(!c) return {ok:false,error:"no client"};
-    const deadline=Date.now()+(timeoutMs||90000);
-    while(Date.now()<deadline){
-      const {data}=await c.from("ds_sync_requests").select("*").eq("id",id).maybeSingle();
-      if(data&&(data.status==="done"||data.status==="error")) return {ok:data.status==="done",status:data.status,message:data.message,members_scanned:data.members_scanned};
-      await new Promise(r=>setTimeout(r,1500));
-    }
-    return {ok:false,error:"timeout"};
-  }
-
-  async function fetchBotStatus(){
-    const c=await client();if(!c) return null;
-    const {data}=await c.from("bot_status").select("*").eq("id",1).maybeSingle();
-    return data||null;
-  }
-
   async function fetchSettings(){
     const c=await client();if(!c) return null;
     const {data}=await c.from("vp_settings").select("*").eq("id",1).maybeSingle();
@@ -245,7 +219,7 @@ window.VSRF_VP=(function(){
     const c=await client();if(!c) return {ok:false,error:"no client"};
     const s=window.VSRF_AUTH&&window.VSRF_AUTH.state;
     const name=(function(){try{return localStorage.getItem("vsrf-my-display-name")||(s&&s.user&&s.user.email)||"ss"}catch(e){return "ss"}})();
-    const {data,error}=await c.from("vp_report_requests").insert({archive_id:archiveId,channel_id:channelId,requested_by:s&&s.user?s.user.id:null,requested_by_name:name}).select().single();
+    const {data,error}=await c.from("vp_report_requests").insert({archive_id:archiveId,requested_by:s&&s.user?s.user.id:null,requested_by_name:name}).select().single();
     if(error) return {ok:false,error:error.message};
     return {ok:true,id:data.id};
   }
@@ -259,13 +233,6 @@ window.VSRF_VP=(function(){
       await new Promise(r=>setTimeout(r,1200));
     }
     return {ok:false,error:"timeout"};
-  }
-
-  async function fetchDsChannels(){
-    const c=await client();if(!c) return [];
-    const {data,error}=await c.from("ds_channels").select("*").order("parent_name",{ascending:true,nullsFirst:true}).order("position",{ascending:true});
-    if(error){return []}
-    return data||[];
   }
 
   function filterMembers(members,mapping){
@@ -327,5 +294,5 @@ window.VSRF_VP=(function(){
     return (member.parsed_static||"").trim()||"—";
   }
 
-  return {fetchMembers,fetchRoles,fetchMapping,saveMappingBatch,fetchChecks,saveCheck,saveEvidence,resetCheck,resetChecksBulk,requestSync,pollSyncStatus,fetchBotStatus,fetchSettings,saveSettings,fetchArchives,fetchArchiveFull,buildSnapshot,calcSnapshotStats,saveArchive,deleteArchive,updateArchive,requestReport,pollReportStatus,fetchDsChannels,filterMembers,groupByDept,positionFor,staticFor};
+  return {fetchMembers,fetchRoles,fetchMapping,saveMappingBatch,fetchChecks,saveCheck,saveEvidence,resetCheck,resetChecksBulk,fetchSettings,saveSettings,fetchArchives,fetchArchiveFull,buildSnapshot,calcSnapshotStats,saveArchive,deleteArchive,updateArchive,requestReport,pollReportStatus,filterMembers,groupByDept,positionFor,staticFor};
 })();

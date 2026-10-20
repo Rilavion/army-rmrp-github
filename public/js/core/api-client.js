@@ -28,11 +28,11 @@
  const auth={
   async getSession(){const r=await call('/auth/session',undefined,'GET');current=r.data?.session?.user||null;return r;},
   async getUser(){await this.getSession();return {data:{user:current},error:null};},
-  async signInWithPassword(b){const r=await call('/auth/login',b);if(!r.error){current=r.data.user;emit('SIGNED_IN');}return r;},
+  async signInWithPassword(b){const r=await call('/auth/login',b);if(!r.error&&r.data?.session){current=r.data.user;emit('SIGNED_IN');}return r;},
   async signOut(){const r=await call('/auth/logout',{});current=null;emit('SIGNED_OUT');return r;},
   onAuthStateChange(fn){listeners.add(fn);return {data:{subscription:{unsubscribe:()=>listeners.delete(fn)}}};},
   updateUser:body=>call('/auth/user',body,'PATCH'),
-  signUp:()=>Promise.resolve({data:null,error:{message:'Аккаунты создаёт администратор в личном кабинете'}}),
+  signUp:()=>Promise.resolve({data:null,error:{message:'Подайте заявку на странице register.html'}}),
   admin:{createUser:body=>call('/auth/admin/users',body),listUsers:()=>call('/auth/admin/users',undefined,'GET'),deleteUser:id=>call('/auth/admin/users/'+encodeURIComponent(id),undefined,'DELETE')}
  };
  function channel(){let timer,stopped=false,running=false;const callbacks=[];async function poll(){if(stopped||running||document.hidden)return;running=true;try{for(const item of callbacks){if(!item.table)continue;const result=await call('/db/query',{table:item.table,action:'select',select:'*',limit:1000,filters:[],orders:[],or:[]});if(result.error)continue;const signature=JSON.stringify(result.data);if(item.signature!==undefined&&item.signature!==signature)item.fn({eventType:'REFRESH'});item.signature=signature;}}finally{running=false;}}return {on(event,filter,fn){callbacks.push({table:filter?.table,fn});return this;},subscribe(fn){poll();timer=setInterval(poll,30000);fn?.('SUBSCRIBED');return this;},unsubscribe(){stopped=true;clearInterval(timer);}};}

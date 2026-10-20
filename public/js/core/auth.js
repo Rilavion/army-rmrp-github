@@ -1,11 +1,12 @@
 window.VSRF_AUTH=(function(){
-  const state={client:null,user:null,ready:false,available:false};
+  const state={client:null,user:null,ready:false,available:false,staticEnabled:false};
   const listeners=[];
 
   function emit(){listeners.forEach(fn=>{try{fn(state)}catch(e){}})}
   function onChange(fn){listeners.push(fn);fn(state);return()=>{const i=listeners.indexOf(fn);if(i>=0) listeners.splice(i,1)}}
 
   async function init(){
+    try{const r=await fetch('/api/v1/accounts/config');const payload=await r.json();state.staticEnabled=payload.data?.enabled===true;}catch{}
     const cfg=window.SUPABASE_CONFIG;
     if(!cfg||!cfg.url||!cfg.anonKey||!window.supabase){
       state.available=false;state.ready=true;emit();
@@ -55,7 +56,7 @@ window.VSRF_AUTH=(function(){
       if(state.user){
         if(label) label.textContent="Выйти";
         b.setAttribute("data-logged","1");
-        b.title=state.user.email||"Выйти";
+        b.title=state.user.user_metadata?.display_name||state.user.static_id||"Выйти";
       }else{
         if(label) label.textContent="Войти";
         b.removeAttribute("data-logged");
@@ -67,26 +68,15 @@ window.VSRF_AUTH=(function(){
     });
   }
 
-  function openModal(){
-    const m=document.getElementById("loginModal");
-    if(!m){alert("Форма входа недоступна на этой странице.");return}
-    const msg=m.querySelector(".form-msg");
-    if(msg){msg.className="form-msg";msg.textContent=""}
-    if(!state.available){
-      if(msg){msg.className="form-msg info";msg.textContent="Сервер авторизации недоступен. Обратитесь к техническому администратору."}
-    }
-    m.classList.add("active");
-  }
-  function closeModal(){
-    const m=document.getElementById("loginModal");
-    if(m) m.classList.remove("active");
-  }
+  function openModal(){location.href='account.html';}
+  function closeModal(){}
 
-  async function submitLogin(email,password){
+  async function submitLogin(static_id,password){
     if(!state.available||!state.client) return {ok:false,error:"Авторизация недоступна"};
     try{
-      const {data,error}=await state.client.auth.signInWithPassword({email,password});
+      const {data,error}=await state.client.auth.signInWithPassword({static_id,password});
       if(error) return {ok:false,error:error.message};
+      if(!data?.session)return {ok:false,error:data?.status==='pending'?'Заявка ожидает проверки':'Заявка отклонена'};
       state.user=data.user;emit();updateUI();
       return {ok:true};
     }catch(e){return {ok:false,error:e.message||"Ошибка входа"}}
@@ -101,33 +91,7 @@ window.VSRF_AUTH=(function(){
     }
   }
 
-  document.addEventListener("DOMContentLoaded",()=>{
-    bootAuth();
-    const m=document.getElementById("loginModal");
-    if(m){
-      m.addEventListener("click",e=>{if(e.target===m) closeModal()});
-      const close=m.querySelector(".modal-close");
-      if(close) close.addEventListener("click",closeModal);
-      const form=m.querySelector("form");
-      if(form){
-        form.addEventListener("submit",async e=>{
-          e.preventDefault();
-          const msg=m.querySelector(".form-msg");
-          const email=form.email.value.trim();
-          const password=form.password.value;
-          if(!state.available){
-            msg.className="form-msg info";
-            msg.textContent="Авторизация недоступна. Заполните config.js по инструкции в SUPABASE.md";
-            return;
-          }
-          msg.className="form-msg info";msg.textContent="Проверка...";
-          const r=await submitLogin(email,password);
-          if(r.ok){msg.className="form-msg success";msg.textContent="Успешный вход";setTimeout(closeModal,500)}
-          else{msg.className="form-msg error";msg.textContent=r.error}
-        });
-      }
-    }
-  });
+  document.addEventListener("DOMContentLoaded",bootAuth);
 
   return {onChange,openModal,closeModal,submitLogin,signOut,state};
 })();

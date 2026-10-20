@@ -151,10 +151,9 @@ window.VSRF_ROLES=(function(){
   }
 
   // ==== Создание нового пользователя ====
-  // Через обычный signUp — новому юзеру приходит confirm-email, потом админ ему проставляет роль.
-  // Второй вариант — админ вручную знает user_id (из auth.users) и вызывает setRole.
-  async function inviteAndSetRole(email,password,role,displayName,customRoleId){
- const r=await window.VSRF_API.call('/auth/admin/users',{email,password,role:role||'user',display_name:displayName,custom_role_id:customRoleId});return r.error?{ok:false,error:r.error.message}:{ok:true,user_id:r.data.user.id};
+  // Создание администратором по статику через защищённый API.
+  async function inviteAndSetRole(static_id,password,role,displayName,customRoleId){
+ const r=await window.VSRF_API.call('/auth/admin/users',{static_id,password,role:role||'user',display_name:displayName,custom_role_id:customRoleId});return r.error?{ok:false,error:r.error.message}:{ok:true,user_id:r.data.user.id};
  }
   document.addEventListener("DOMContentLoaded",()=>{
     if(window.VSRF_AUTH&&window.VSRF_AUTH.onChange){

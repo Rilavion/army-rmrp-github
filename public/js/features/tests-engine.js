@@ -281,7 +281,7 @@ window.VSRF_TESTS=(function(){
     const s=window.VSRF_AUTH&&window.VSRF_AUTH.state;
     const name=(function(){try{return localStorage.getItem("vsrf-my-display-name")||(s&&s.user&&s.user.email)||"system"}catch(e){return "system"}})();
     if(s&&s.user){
-      const row={attempt_id:attemptId,channel_id:channelId||null,ping_discord:pingDiscord||null,is_repeat:!!isRepeat,requested_by:s.user.id,requested_by_name:name};
+      const row={attempt_id:attemptId,is_repeat:!!isRepeat,requested_by:s.user.id,requested_by_name:name};
       const {data,error}=await c.from("test_result_requests").insert(row).select().single();
       if(error) return {ok:false,error:error.message};
       return {ok:true,id:data.id};
@@ -310,11 +310,5 @@ window.VSRF_TESTS=(function(){
     return {ok:false,error:"timeout"};
   }
 
-  async function fetchDsChannels(){
-    const c=await client();if(!c) return [];
-    const {data}=await c.from("ds_channels").select("*").order("parent_name",{ascending:true,nullsFirst:true}).order("position",{ascending:true});
-    return data||[];
-  }
-
-  return {esc,validStatic,slugify,resultChannelId,fetchCategories,saveCategory,removeCategory,fetchTests,fetchTest,saveTest,removeTest,fetchQuestions,saveQuestion,removeQuestion,reorderQuestions,fetchPingLines,savePingLine,removePingLine,fetchBlocks,addBlock,removeBlock,attemptsFor,checkBlocked,fetchAttempts,updateAttempt,resetAttempts,grade,pickQuestionsForRun,startAttempt,submitAttempt,requestResult,pollResult,fetchDsChannels};
+  return {esc,validStatic,slugify,resultChannelId,fetchCategories,saveCategory,removeCategory,fetchTests,fetchTest,saveTest,removeTest,fetchQuestions,saveQuestion,removeQuestion,reorderQuestions,fetchPingLines,savePingLine,removePingLine,fetchBlocks,addBlock,removeBlock,attemptsFor,checkBlocked,fetchAttempts,updateAttempt,resetAttempts,grade,pickQuestionsForRun,startAttempt,submitAttempt,requestResult,pollResult,};
 })();

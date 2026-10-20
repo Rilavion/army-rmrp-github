@@ -35,58 +35,23 @@
     if(nav.parentElement!==document.body) document.body.appendChild(nav);
 
     if(!nav.querySelector(".nav-header")){
-      const links=Array.from(nav.querySelectorAll("a"));
+      const links=window.VSRF_NAV.map(item=>{
+        const a=document.createElement("a");
+        a.href=item.page;a.dataset.page=item.page;a.textContent=item.label;
+        a.dataset.navGroup=item.group;
+        if(item.perm)a.dataset.perm=item.perm;
+        if(item.group!=="public")a.setAttribute("data-loggedin","");
+        return a;
+      });
       const currentPage=(location.pathname.split("/").pop()||"index.html").toLowerCase();
       links.forEach(a=>{
         if(!a.dataset.page && a.getAttribute("href")) a.setAttribute("data-page",a.getAttribute("href").toLowerCase());
         if((a.dataset.page||"").toLowerCase()===currentPage) a.classList.add("active");
       });
 
-      const PAGE_PERM={
-        "apps.html":"apps:view",
-        "vp.html":"vp:view",
-        "supply.html":"supply:view",
-        "supply-stats.html":"supply:stats",
-        "apps-stats.html":"apps:view",
-        "requests-review.html":"requests:review,requests:view",
-        "requests-stats.html":"requests:review,requests:view",
-        "requests-settings.html":"requests:settings",
-        "supply-admin.html":"supply:admin",
-        "docs.html":"docs:view",
-        "complaints-review.html":"complaints:review,complaints:view",
-        "complaints-stats.html":"complaints:review,complaints:view",
-        "complaints-form.html":"complaints:form_edit,complaints:settings",
-        "complaints-settings.html":"complaints:settings",
-        "payroll.html":"payroll:view",
-        "restoration.html":"requests:review,requests:view,complaints:review",
-        "raids.html":"raids:view",
-        "report-settings.html":"report:settings",
-        "vp-request.html":"vp_request:submit",
-        "vp-request-settings.html":"vp_request:settings"
-      };
-      links.forEach(a=>{
-        const page=(a.dataset.page||"").toLowerCase();
-        if(PAGE_PERM[page] && !a.hasAttribute("data-perm")) a.setAttribute("data-perm",PAGE_PERM[page]);
-        a.removeAttribute("data-admin");
-        a.removeAttribute("data-staff");
-      });
-
-      const publicPages=["learn.html","training.html","service-requests.html","index.html","info.html","ustav.html","composition.html","news.html","autopark.html","map.html","faq.html","complaints.html"];
-      const loggedInPages=["tests.html","leave.html","vacation-ic.html","vacation-ooc.html","dismissal.html","promotion.html","restoration.html","report.html","vp-request.html"];
-      const staffPages=["supply-report.html","integrations.html","roles.html","supply-admin.html","apps.html","apps-stats.html","vp.html","complaints-review.html","complaints-stats.html","requests-review.html","requests-stats.html","requests-settings.html","payroll.html","supply.html","supply-stats.html","docs.html","lk.html","raids.html","report-settings.html","vp-request-settings.html"];
-      const alwaysVisibleForLogged=["lk.html"];
-
-
-      const publicLinks=links.filter(a=>publicPages.includes((a.dataset.page||"").toLowerCase()));
-      const loggedInLinks=links.filter(a=>loggedInPages.includes((a.dataset.page||"").toLowerCase()));
-      const staffLinks=links.filter(a=>staffPages.includes((a.dataset.page||"").toLowerCase()));
-      loggedInLinks.forEach(a=>a.setAttribute("data-loggedin",""));
-      staffLinks.forEach(a=>{
-        if(alwaysVisibleForLogged.includes((a.dataset.page||"").toLowerCase())){
-          a.setAttribute("data-loggedin","");
-          a.removeAttribute("data-perm");
-        }
-      });
+      const publicLinks=links.filter(a=>a.dataset.navGroup==="public");
+      const loggedInLinks=links.filter(a=>a.dataset.navGroup==="personal");
+      const staffLinks=links.filter(a=>a.dataset.navGroup==="staff");
 
       nav.innerHTML="";
       const header=document.createElement("div");
@@ -135,7 +100,7 @@
 
       const footer=document.createElement("div");
       footer.className="nav-footer";
-      footer.innerHTML='<div class="nav-footer-motto">Честь · Долг · Отвага</div><div class="nav-footer-sub">Служим Отечеству</div>';
+      footer.innerHTML='<button class="btn btn-ghost btn-sm" data-open-settings="">Оформление сайта</button><div class="nav-footer-motto">Честь · Долг · Отвага</div><div class="nav-footer-sub">Служим Отечеству</div>';
       nav.appendChild(footer);
 
       if(window.VSRF_ROLES&&window.VSRF_ROLES.applyPermGates) window.VSRF_ROLES.applyPermGates();
@@ -147,14 +112,15 @@
       backdrop.className="nav-backdrop";
       document.body.appendChild(backdrop);
     }
-    function open(){b.classList.add("open");nav.classList.add("open");backdrop.classList.add("visible");document.body.style.overflow="hidden"}
-    function close(){b.classList.remove("open");nav.classList.remove("open");backdrop.classList.remove("visible");document.body.style.overflow=""}
+    function open(){b.setAttribute("aria-expanded","true");b.classList.add("open");nav.classList.add("open");backdrop.classList.add("visible");document.body.style.overflow="hidden"}
+    function close(){b.setAttribute("aria-expanded","false");b.classList.remove("open");nav.classList.remove("open");backdrop.classList.remove("visible");document.body.style.overflow=""}
+    b.setAttribute("aria-controls","mainNav");b.setAttribute("aria-expanded","false");
     b.addEventListener("click",()=>{
       if(nav.classList.contains("open")) close();else open();
     });
     backdrop.addEventListener("click",close);
     document.addEventListener("keydown",e=>{if(e.key==="Escape") close()});
-    nav.querySelectorAll("a").forEach(a=>{
+    nav.querySelectorAll("a,[data-open-settings]").forEach(a=>{
       a.addEventListener("click",close);
     });
   }
@@ -332,10 +298,16 @@
     const c=document.getElementById("bgCanvas");
     if(!c) return;
     const ctx=c.getContext("2d");
+    if(!ctx)return;
+    c.setAttribute("aria-hidden","true");
+    const devicePixelRatio=Math.min(window.devicePixelRatio||1,1.5);
+    const reducedMotion=matchMedia("(prefers-reduced-motion: reduce)");
     let W=0,H=0,raf=null;
-    let mode=localStorage.getItem("vsrf-bg-mode")||"grid";
-    let enabled=localStorage.getItem("vsrf-bg-enabled")==="1"&&!matchMedia("(prefers-reduced-motion: reduce)").matches;
-    let parts=[],stars=[],radarAngle=0;
+    const FALL_TYPES=["star","shield","chevron","compass","tag"];
+    let mode=localStorage.getItem("vsrf-bg-mode")||"falling";
+    if(["grid","dots","waves","stars","radar","falling"].indexOf(mode)<0) mode="falling";
+    let enabled=localStorage.getItem("vsrf-bg-enabled")!=="0";
+    let parts=[],stars=[],falls=[],radarAngle=0,waveT=0;
 
     function resize(){
       W=c.width=window.innerWidth*devicePixelRatio;
@@ -367,6 +339,160 @@
           phase:rand(0,Math.PI*2),
           isBig
         });
+      }
+    }
+
+    /* ---------- «Атмосфера ВС РФ»: звёзды, щиты, шевроны и компасы ---------- */
+    function fallPalettes(){
+      const light=root.getAttribute("data-theme")==="light";
+      return light
+        ?[[61,90,73],[106,117,65],[138,106,31],[85,105,68],[128,114,63]]
+        :[[205,168,90],[144,169,113],[181,153,88],[118,147,104],[227,199,136]];
+    }
+    function newFall(anyY){
+      const dpr=devicePixelRatio;
+      const depth=rand(.35,1); // глубина слоя: ближе = крупнее/быстрее
+      return {
+        x:rand(0,W),
+        y:anyY?rand(-H,H):rand(-H*.25,-50*dpr),
+        s:rand(9,30)*dpr*depth+8*dpr*0.4,
+        vy:rand(.22,.75)*dpr*(0.55+depth),
+        sway:rand(10,34)*dpr,
+        swaySp:rand(.4,1.1),
+        phase:rand(0,Math.PI*2),
+        rot:rand(0,Math.PI*2),
+        vr:rand(-.0045,.0045),
+        a:rand(.08,.22)+depth*.08,
+        col:(Math.random()*5)|0,
+        type:FALL_TYPES[(Math.random()*FALL_TYPES.length)|0]
+      };
+    }
+    function buildFalls(){
+      const N=Math.min(36,Math.max(18,Math.floor(window.innerWidth/36)));
+      falls=[];
+      for(let i=0;i<N;i++) falls.push(newFall(true));
+    }
+    function drawFallShape(f,pal){
+      const c=pal[f.col%pal.length];
+      const s=f.s;
+      ctx.save();
+      ctx.translate(f.x+Math.sin(f.phase+f.y/220*f.swaySp)*f.sway,f.y);
+      ctx.rotate(f.rot);
+      ctx.strokeStyle=`rgba(${c[0]},${c[1]},${c[2]},${Math.min(f.a*1.35,.5)})`;
+      ctx.fillStyle=`rgba(${c[0]},${c[1]},${c[2]},${Math.min(f.a,.4)})`;
+      ctx.lineWidth=Math.max(1.4,s*.14);
+      ctx.lineCap="round";ctx.lineJoin="round";
+      switch(f.type){
+        case "star":
+          ctx.beginPath();
+          for(let k=0;k<10;k++){
+            const a=-Math.PI/2+k*Math.PI/5,r=k%2?s*.43:s;
+            if(k===0)ctx.moveTo(Math.cos(a)*r,Math.sin(a)*r);else ctx.lineTo(Math.cos(a)*r,Math.sin(a)*r);
+          }
+          ctx.closePath();ctx.fill();ctx.stroke();break;
+        case "shield":
+          ctx.beginPath();ctx.moveTo(0,-s);ctx.lineTo(s*.78,-s*.65);ctx.lineTo(s*.65,s*.25);
+          ctx.quadraticCurveTo(s*.45,s*.8,0,s);ctx.quadraticCurveTo(-s*.45,s*.8,-s*.65,s*.25);
+          ctx.lineTo(-s*.78,-s*.65);ctx.closePath();ctx.fill();ctx.stroke();break;
+        case "chevron":
+          for(const y of [-.35,.35]){ctx.beginPath();ctx.moveTo(-s,y*s-s*.35);ctx.lineTo(0,y*s+s*.3);ctx.lineTo(s,y*s-s*.35);ctx.stroke();}break;
+        case "compass":
+          ctx.beginPath();ctx.arc(0,0,s*.85,0,Math.PI*2);ctx.stroke();
+          ctx.beginPath();ctx.moveTo(0,-s*1.1);ctx.lineTo(s*.3,0);ctx.lineTo(0,s*1.1);ctx.lineTo(-s*.3,0);ctx.closePath();ctx.fill();ctx.stroke();break;
+        case "tag":
+          ctx.beginPath();ctx.roundRect(-s*.65,-s,s*1.3,s*2,s*.28);ctx.fill();ctx.stroke();
+          ctx.beginPath();ctx.arc(0,-s*.55,s*.12,0,Math.PI*2);ctx.stroke();
+          ctx.beginPath();ctx.moveTo(-s*.3,0);ctx.lineTo(s*.3,0);ctx.moveTo(-s*.3,s*.35);ctx.lineTo(s*.3,s*.35);ctx.stroke();break;
+      }
+      ctx.restore();
+    }
+    function renderFalling(){
+      const pal=fallPalettes();
+      // лёгкая координатная сетка
+      const dpr=devicePixelRatio;
+      const step=170*dpr;
+      const light=root.getAttribute("data-theme")==="light";
+      ctx.strokeStyle=light?"rgba(61,90,73,.05)":"rgba(205,168,90,.045)";
+      ctx.lineWidth=1.2*dpr;
+      const cr=7*dpr;
+      for(let x=step/2;x<W;x+=step){
+        for(let y=step/2;y<H;y+=step){
+          ctx.beginPath();
+          ctx.moveTo(x-cr,y);ctx.lineTo(x+cr,y);
+          ctx.moveTo(x,y-cr);ctx.lineTo(x,y+cr);
+          ctx.stroke();
+        }
+      }
+      for(let i=0;i<falls.length;i++){
+        const f=falls[i];
+        f.y+=f.vy;f.rot+=f.vr;f.phase+=.006*f.swaySp;
+        if(f.y-f.s*2>H){falls[i]=newFall(false);continue}
+        drawFallShape(f,pal);
+      }
+    }
+
+    /* ---------- Точки ---------- */
+    function renderDots(){
+      const dpr=devicePixelRatio;
+      const step=44*dpr;
+      const light=root.getAttribute("data-theme")==="light";
+      const t=Date.now()/1000;
+      for(let x=step/2;x<W;x+=step){
+        for(let y=step/2;y<H;y+=step){
+          const pulse=.5+.5*Math.sin(t*.8+(x+y)/240);
+          const r=(1.1+pulse*1.3)*dpr;
+          ctx.beginPath();
+          ctx.fillStyle=light?`rgba(61,90,73,${.07+pulse*.08})`:`rgba(205,168,90,${.06+pulse*.09})`;
+          ctx.arc(x,y,r,0,Math.PI*2);
+          ctx.fill();
+        }
+      }
+      // дрейфующие крупные точки
+      const color=getColor();
+      for(let i=0;i<parts.length;i++){
+        const p=parts[i];
+        p.x+=p.vx*.6;p.y+=p.vy*.6;
+        if(p.x<0) p.x=W;if(p.x>W) p.x=0;
+        if(p.y<0) p.y=H;if(p.y>H) p.y=0;
+        ctx.beginPath();
+        ctx.fillStyle=`rgba(${color},${p.a*.7})`;
+        ctx.arc(p.x,p.y,p.r*1.4,0,Math.PI*2);
+        ctx.fill();
+      }
+    }
+
+    /* ---------- Волны ---------- */
+    function renderWaves(){
+      waveT+=.006;
+      const light=root.getAttribute("data-theme")==="light";
+      const dpr=devicePixelRatio;
+      const layers=[
+        {amp:26*dpr,len:.004/dpr*800,sp:1,al:light?.05:.055,off:.18},
+        {amp:40*dpr,len:.003/dpr*800,sp:-.7,al:light?.045:.05,off:.38},
+        {amp:58*dpr,len:.0022/dpr*800,sp:.45,al:light?.04:.045,off:.62}
+      ];
+      const color=getColor();
+      for(const L of layers){
+        ctx.beginPath();
+        const baseY=H*L.off;
+        for(let x=0;x<=W;x+=8*dpr){
+          const y=baseY+Math.sin(x*L.len/2+waveT*L.sp*2)*L.amp+Math.sin(x*L.len/3.7-waveT*L.sp)*L.amp*.5;
+          if(x===0) ctx.moveTo(x,y);else ctx.lineTo(x,y);
+        }
+        ctx.strokeStyle=`rgba(${color},${L.al*2})`;
+        ctx.lineWidth=1.4*dpr;
+        ctx.stroke();
+      }
+      // плавающие блики
+      for(let i=0;i<parts.length;i++){
+        const p=parts[i];
+        p.x+=p.vx*.4;p.y+=p.vy*.4;
+        if(p.x<0) p.x=W;if(p.x>W) p.x=0;
+        if(p.y<0) p.y=H;if(p.y>H) p.y=0;
+        ctx.beginPath();
+        ctx.fillStyle=`rgba(${color},${p.a*.5})`;
+        ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+        ctx.fill();
       }
     }
 
@@ -486,31 +612,43 @@
       }
     }
 
-    function tick(){
+    function draw(){
       ctx.clearRect(0,0,W,H);
       if(mode==="grid") renderGrid();
       else if(mode==="stars") renderStars();
       else if(mode==="radar") renderRadar();
+      else if(mode==="dots") renderDots();
+      else if(mode==="waves") renderWaves();
+      else if(mode==="falling") renderFalling();
+    }
+    let lastFrame=0;
+    function tick(time){
       raf=requestAnimationFrame(tick);
+      if(time-lastFrame<1000/30)return;
+      lastFrame=time;draw();
     }
 
     function start(){
-      if(!enabled){stop();c.style.opacity="0";return}
+      stop();
+      if(document.hidden)return;
       c.style.opacity="1";
       if(mode==="stars"&&!stars.length) buildStars();
-      if((mode==="grid"||mode==="radar")&&!parts.length) buildParts();
-      if(!raf) tick();
+      if((mode==="grid"||mode==="radar"||mode==="dots"||mode==="waves")&&!parts.length) buildParts();
+      if(mode==="falling"&&!falls.length) buildFalls();
+      draw();
+      if(enabled&&!reducedMotion.matches)raf=requestAnimationFrame(tick);
     }
     function stop(){if(raf){cancelAnimationFrame(raf);raf=null}}
 
     function applyMode(m){
+      if(!["grid","dots","waves","stars","radar","falling"].includes(m))return;
       mode=m;localStorage.setItem("vsrf-bg-mode",m);
-      parts=[];stars=[];
+      parts=[];stars=[];falls=[];
       start();
     }
     function toggleEnabled(v){
       enabled=v;localStorage.setItem("vsrf-bg-enabled",v?"1":"0");
-      if(v) start();else{stop();c.style.opacity="0"}
+      start();
     }
 
     resize();
@@ -519,11 +657,14 @@
     let rt;
     window.addEventListener("resize",()=>{
       clearTimeout(rt);
-      rt=setTimeout(()=>{resize();parts=[];stars=[];start()},200);
+      rt=setTimeout(()=>{resize();parts=[];stars=[];falls=[];start()},200);
     });
     document.addEventListener("visibilitychange",()=>{
-      if(document.hidden) stop();else if(enabled) start();
+      if(document.hidden) stop();else start();
     });
+
+    reducedMotion.addEventListener("change",start);
+    new MutationObserver(start).observe(root,{attributes:true,attributeFilter:["data-theme"]});
 
     window.VSRF_BG={
       setMode:applyMode,
@@ -531,6 +672,7 @@
       getMode:()=>mode,
       isEnabled:()=>enabled
     };
+
     document.dispatchEvent(new CustomEvent("vsrf-bg-ready"));
   }
 })();

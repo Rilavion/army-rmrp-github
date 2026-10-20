@@ -14,18 +14,7 @@ window.VSRF_SETTINGS_PANEL=(function(){
 
         <div class="vsrf-sp-section">
           <div class="vsrf-sp-section-title">Разделы сайта</div>
-          <div class="vsrf-sp-links">
-            <a href="index.html">Главная</a>
-            <a href="ustav.html">Уставы</a>
-            <a href="training.html">Обучение</a>
-            <a href="composition.html">Состав</a>
-            <a href="news.html">Новости</a>
-            <a href="autopark.html">Автопарк</a>
-            <a href="map.html">Карта</a>
-            <a href="faq.html">FAQ</a>
-            <a href="lk.html">Личный кабинет</a>
-            <a href="docs.html" data-admin>Документы</a>
-          </div>
+          <div class="vsrf-sp-links"></div>
         </div>
 
         <div class="vsrf-sp-section">
@@ -35,6 +24,9 @@ window.VSRF_SETTINGS_PANEL=(function(){
             <label class="fs-switch"><input type="checkbox" id="spAnim"><span class="fs-switch-track"><span class="fs-switch-thumb"></span></span></label>
           </div>
           <div class="vsrf-sp-bg-modes" id="spBgModes">
+            <button class="vsrf-sp-bg-btn" data-bg="falling">Атмосфера ВС РФ</button>
+            <button class="vsrf-sp-bg-btn" data-bg="dots">Точки</button>
+            <button class="vsrf-sp-bg-btn" data-bg="waves">Волны</button>
             <button class="vsrf-sp-bg-btn" data-bg="grid">Сеть</button>
             <button class="vsrf-sp-bg-btn" data-bg="stars">Звёзды</button>
             <button class="vsrf-sp-bg-btn" data-bg="radar">Радар</button>
@@ -61,7 +53,15 @@ window.VSRF_SETTINGS_PANEL=(function(){
 
       </div>
     </div>`;
+    const menu=panel.querySelector(".vsrf-sp-links");
+    window.VSRF_NAV.forEach(item=>{
+      const a=document.createElement("a");a.href=item.page;a.textContent=item.label;
+      if(item.perm)a.dataset.perm=item.perm;
+      if(item.group!=="public")a.setAttribute("data-loggedin","");
+      menu.appendChild(a);
+    });
     document.body.appendChild(panel);
+    window.VSRF_ROLES?.applyPermGates();
     panel.querySelector(".vsrf-sp-close").addEventListener("click",close);
     panel.addEventListener("click",e=>{if(e.target===panel) close()});
     document.addEventListener("keydown",e=>{if(e.key==="Escape"&&panel.classList.contains("visible")) close()});
@@ -74,10 +74,10 @@ window.VSRF_SETTINGS_PANEL=(function(){
       if(!window.VSRF_BG) return;
       anim.checked=window.VSRF_BG.isEnabled();
       const cur=window.VSRF_BG.getMode();
-      bgBtns.forEach(b=>{b.classList.toggle("active",b.dataset.bg===cur);b.disabled=!window.VSRF_BG.isEnabled()});
+      bgBtns.forEach(b=>{b.classList.toggle("active",b.dataset.bg===cur);b.disabled=false});
     }
     anim.addEventListener("change",()=>{if(window.VSRF_BG){window.VSRF_BG.setEnabled(anim.checked);syncBg()}});
-    bgBtns.forEach(b=>b.addEventListener("click",()=>{if(window.VSRF_BG&&window.VSRF_BG.isEnabled()){window.VSRF_BG.setMode(b.dataset.bg);syncBg()}}));
+    bgBtns.forEach(b=>b.addEventListener("click",()=>{if(window.VSRF_BG){window.VSRF_BG.setMode(b.dataset.bg);syncBg()}}));
     if(window.VSRF_BG) syncBg();else document.addEventListener("vsrf-bg-ready",syncBg);
 
     const s=panel.querySelector("#spSound");

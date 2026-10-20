@@ -54,16 +54,6 @@ window.VSRF_LK=(function(){
         (data||[]).forEach(x=>activity.push({type:"lesson",title:"🎓 Урок · "+(x.title||"—"),who:x.author_name||"—",at:x.created_at,icon:"🎓",href:"training.html#l-"+x.id}));
       }),
       safe(async()=>{
-        const {data}=await c.from("applications").select("id,app_type,submitter_name,submitter_discord,status,responded_by_name,responded_at,created_at").order("created_at",{ascending:false}).limit(20);
-        (data||[]).forEach(x=>{
-          activity.push({type:"app",title:"📋 Заявление · "+(x.app_type||"—"),who:x.submitter_name||x.submitter_discord||"—",at:x.created_at,icon:"📋",href:"apps.html#app-"+x.id});
-          if(x.responded_at&&x.status!=="new"){
-            const st=x.status==="approved"?"✅ Одобрено":x.status==="rejected"?"❌ Отказано":"↩ "+x.status;
-            activity.push({type:"app-verdict",title:st+" · "+(x.app_type||"—"),who:x.responded_by_name||"—",at:x.responded_at,icon:"⚖",href:"apps.html#app-"+x.id});
-          }
-        });
-      }),
-      safe(async()=>{
         const {data}=await c.from("complaints").select("id,code,target_fio,submitter_fio,status,verdict_by_name,verdict_at,created_at").order("created_at",{ascending:false}).limit(20);
         (data||[]).forEach(x=>{
           activity.push({type:"complaint",title:"⚠ Жалоба · "+(x.code||"—"),who:x.submitter_fio||"—",at:x.created_at,icon:"⚠",href:"complaints-review.html#c-"+x.id});
@@ -148,13 +138,6 @@ window.VSRF_LK=(function(){
         if(data&&data.updated_at){
           activity.push({type:"composition",title:"👥 Изменение состава",who:data.updated_by_name||"—",at:data.updated_at,icon:"👥",href:"composition.html"});
         }
-      }),
-      safe(async()=>{
-        const {data}=await c.from("raids_events").select("id,kind,ds_author_name,created_at").order("created_at",{ascending:false}).limit(20);
-        (data||[]).forEach(x=>{
-          const t=x.kind==="success"?"✅ Успешный налёт":"❌ Неудачный налёт";
-          activity.push({type:"raid-"+x.kind,title:"💥 "+t,who:x.ds_author_name||"—",at:x.created_at,icon:"💥",href:"raids.html"});
-        });
       })
     ]);
 

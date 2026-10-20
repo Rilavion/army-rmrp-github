@@ -103,7 +103,7 @@ window.VSRF_COMP=(function(){
         if(attempt<3) await new Promise(r=>setTimeout(r,700*attempt));
       }
     }
-    const cached=readLocal();
+    const cached=null;
     return migrate(cached||JSON.parse(JSON.stringify(DEFAULT_STATE)));
   }
 

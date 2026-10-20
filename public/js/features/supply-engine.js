@@ -95,35 +95,5 @@ window.VSRF_SUPPLY=(function(){
     return {ok:true};
   }
 
-  async function requestRescan(fromISO,toISO){
-    const c=await client();if(!c) return {ok:false,error:"no client"};
-    const s=window.VSRF_AUTH&&window.VSRF_AUTH.state;
-    const name=(function(){try{return localStorage.getItem("vsrf-my-display-name")||(s&&s.user&&s.user.email)||"ss"}catch(e){return "ss"}})();
-    const {data,error}=await c.from("supply_rescan_requests").insert({from_date:fromISO||null,to_date:toISO||null,requested_by:s&&s.user?s.user.id:null,requested_by_name:name}).select().single();
-    if(error) return {ok:false,error:error.message};
-    return {ok:true,id:data.id};
-  }
-  async function pollRescan(id,timeoutMs){
-    const c=await client();if(!c) return {ok:false,error:"no client"};
-    const deadline=Date.now()+(timeoutMs||60000);
-    while(Date.now()<deadline){
-      const {data}=await c.from("supply_rescan_requests").select("*").eq("id",id).maybeSingle();
-      if(data&&(data.status==="done"||data.status==="error")) return {ok:data.status==="done",scanned:data.scanned,error:data.message};
-      await new Promise(r=>setTimeout(r,1200));
-    }
-    return {ok:false,error:"timeout"};
-  }
-
-  async function fetchDsChannels(){
-    const c=await client();if(!c) return [];
-    const {data}=await c.from("ds_channels").select("*").order("parent_name",{ascending:true,nullsFirst:true}).order("position",{ascending:true});
-    return data||[];
-  }
-  async function fetchDsRoles(){
-    const c=await client();if(!c) return [];
-    const {data}=await c.from("ds_roles").select("*").order("position",{ascending:false});
-    return data||[];
-  }
-
-  return {esc,validStatic,fetchForm,saveForm,submit,fetchRequests,updateRequest,deleteRequest,replaceRequest,deleteAll,requestRescan,pollRescan,fetchDsChannels,fetchDsRoles};
+  return {esc,validStatic,fetchForm,saveForm,submit,fetchRequests,updateRequest,deleteRequest,replaceRequest,deleteAll,};
 })();
