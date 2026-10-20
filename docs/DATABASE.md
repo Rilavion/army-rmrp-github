@@ -1,6 +1,20 @@
 # PostgreSQL: схема данных
 
-Миграции применяются к новой БД в порядке 001 → 007. Полные CREATE TABLE, индексы, внешние ключи и функции находятся в SQL-файлах этого каталога. Этот справочник сформирован из применённой схемы, содержит 71 таблиц.
+Миграции применяются к новой БД в порядке 001 → 009. Полные CREATE TABLE, индексы, внешние ключи и функции находятся в SQL-файлах каталога `database`. К прежнему справочнику из 71 таблицы добавлена таблица `registration_requests` и колонка `users.static_id` (миграция 008).
+
+### Дополнение 008: регистрация по статику
+
+`users.static_id`: nullable text, UNIQUE, строго 6 цифр с тире `000-000`. NULL обозначает старый аккаунт без привязки: вход недоступен до назначения подтверждённого статика.
+
+`registration_requests`: `id` UUID PK, `static_id` UNIQUE NOT NULL с проверкой формата, `display_name` text (3–120), `password_hash` text, `status` pending/approved/rejected, `review_note` text (до 1000), `reviewed_by` UUID FK users, `reviewed_at` timestamptz, `user_id` UNIQUE UUID FK users, `created_at` timestamptz. CHECK связывает состояние с наличием пользователя и хеша; после одобрения хеш остаётся только в users. Индекс очереди — created_at WHERE status='pending'. Публичного чтения и записи через общий API нет.
+
+Подключение и порядок проверки: [AUTHENTICATION.md](AUTHENTICATION.md). Полный SQL: [008-registration.sql](../database/008-registration.sql).
+
+### Дополнение 009: анкета и приватное УДО
+
+В registration_requests добавлены position (text, 2–120), military_rank (text, 2–80), discord (text, 2–80). Для исторических записей допускается NULL, но сервер отклоняет неполную новую заявку и её одобрение. Новая registration_identity_documents: request_id UUID PK/FK registration_requests ON DELETE CASCADE, image bytea (до 1048576 байт), mime_type (только image/jpeg), created_at timestamptz. Общий API таблиц не выдаёт эти данные. Фото сохраняется в бэкап БД. Миграция отзывает старые auth_sessions; перед запуском привязать статики старым аккаунтам.
+
+SQL: [009-registration-identity.sql](../database/009-registration-identity.sql).
 
 ## Основные группы
 
@@ -12,7 +26,7 @@
 - ВП и премии: vp_checks, vp_archive, payroll_drafts, payroll_archive.
 - Уведомления: webhook_routes, outbox, *_send_requests, audit_log.
 
-Часть таблиц (ds_sync_requests, ds_channels, bot_status, telegram_*, refresh_tokens) сохранена для совместимости исходных модулей. Автоматическое чтение Discord и Telegram не запускается. Текущие сессии хранятся в auth_sessions. Пароли users.password_hash — scrypt, не bcrypt. auth.uid() получает ID из транзакционной настройки сервера, не из браузера.
+Исторические таблицы ds_*, bot_*, telegram_*, applications, apps_settings, raids_* и supply_rescan_requests оставлены в неизменённых миграциях для совместимости схемы существующих установок. Они не используются сайтом и закрыты API даже для администратора. Синхронизация с Discord и Telegram удалена. refresh_tokens не используется текущим механизмом входа. Текущие сессии хранятся в auth_sessions. Пароли users.password_hash — scrypt, не bcrypt. auth.uid() получает ID из транзакционной настройки сервера, не из браузера.
 
 API работает под ограниченной ролью, схема закрыта от PUBLIC. Развёртывание не включает PostgREST и роли anon/authenticated. PostgreSQL runtime-логин не выдаётся пользователям сайта.
 
